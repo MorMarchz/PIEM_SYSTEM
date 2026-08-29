@@ -29,6 +29,8 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import LogoutIcon from '@mui/icons-material/Logout';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useAuth } from '../../context/AuthContext';
+import { APP_VERSION } from '../../config/version';
+import Chip from '@mui/material/Chip';
 
 const DRAWER_WIDTH = 260;
 
@@ -75,7 +77,7 @@ const AppLayout = () => {
       {/* Brand Header */}
       <Box
         sx={{
-          p: 3,
+          p: 2.5,
           display: 'flex',
           alignItems: 'center',
           gap: 1.5,
@@ -92,10 +94,24 @@ const AppLayout = () => {
         >
           <AccountBalanceWalletIcon />
         </Avatar>
-        <Box>
-          <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2, color: '#F8FAFC' }}>
-            PI&EM System
-          </Typography>
+        <Box sx={{ flexGrow: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2, color: '#F8FAFC' }}>
+              PI&EM System
+            </Typography>
+            <Chip
+              label={APP_VERSION}
+              size="small"
+              sx={{
+                height: 18,
+                fontSize: '0.65rem',
+                fontWeight: 700,
+                bgcolor: 'rgba(99, 102, 241, 0.2)',
+                color: '#818CF8',
+                border: '1px solid rgba(99, 102, 241, 0.3)',
+              }}
+            />
+          </Box>
           <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.75rem' }}>
             Finance Management
           </Typography>
@@ -143,17 +159,32 @@ const AppLayout = () => {
 
       <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)' }} />
 
-      {/* User Footer Card */}
-      <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-        <Avatar sx={{ bgcolor: 'secondary.main', width: 36, height: 36 }}>{userInitial}</Avatar>
-        <Box sx={{ overflow: 'hidden', flexGrow: 1 }}>
-          <Typography variant="body2" sx={{ fontWeight: 600, color: '#F8FAFC', noWrap: true }}>
-            {user?.display_name || 'ผู้ใช้งาน'}
-          </Typography>
-          <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', noWrap: true }}>
-            {user?.email || 'user@example.com'}
-          </Typography>
+      {/* User Footer Card & Version Info */}
+      <Box sx={{ p: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
+          <Avatar sx={{ bgcolor: 'secondary.main', width: 36, height: 36 }}>{userInitial}</Avatar>
+          <Box sx={{ overflow: 'hidden', flexGrow: 1 }}>
+            <Typography variant="body2" sx={{ fontWeight: 600, color: '#F8FAFC', noWrap: true }}>
+              {user?.display_name || 'ผู้ใช้งาน'}
+            </Typography>
+            <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', noWrap: true }}>
+              {user?.email || 'user@example.com'}
+            </Typography>
+          </Box>
         </Box>
+        <Typography
+          variant="caption"
+          sx={{
+            display: 'block',
+            textAlign: 'center',
+            color: 'text.secondary',
+            fontSize: '0.7rem',
+            opacity: 0.75,
+            pt: 0.5,
+          }}
+        >
+          PI&EM System {APP_VERSION}
+        </Typography>
       </Box>
     </Box>
   );

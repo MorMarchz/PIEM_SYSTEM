@@ -19,7 +19,9 @@ import SaveIcon from '@mui/icons-material/Save';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useAuth } from '../context/AuthContext';
+import { APP_VERSION } from '../config/version';
 import api from '../services/api';
+import Chip from '@mui/material/Chip';
 
 const ProfilePage = () => {
   const { user, checkAuthStatus } = useAuth();
@@ -150,10 +152,23 @@ const ProfilePage = () => {
         >
           {userInitial}
         </Avatar>
-        <Box>
-          <Typography variant="h5" sx={{ fontWeight: 700, color: '#F8FAFC' }}>
-            {user?.display_name || 'ผู้ใช้งาน'}
-          </Typography>
+        <Box sx={{ flexGrow: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            <Typography variant="h5" sx={{ fontWeight: 700, color: '#F8FAFC' }}>
+              {user?.display_name || 'ผู้ใช้งาน'}
+            </Typography>
+            <Chip
+              label={`App ${APP_VERSION}`}
+              size="small"
+              sx={{
+                fontSize: '0.7rem',
+                fontWeight: 700,
+                bgcolor: 'rgba(99, 102, 241, 0.2)',
+                color: '#818CF8',
+                border: '1px solid rgba(99, 102, 241, 0.3)',
+              }}
+            />
+          </Box>
           <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.25 }}>
             อีเมล: <span style={{ color: '#F8FAFC' }}>{user?.email}</span>
           </Typography>

@@ -20,6 +20,7 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import { useAuth } from '../context/AuthContext';
+import { APP_VERSION } from '../config/version';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -194,6 +195,9 @@ const LoginPage = () => {
                 >
                   สมัครสมาชิกที่นี่
                 </Link>
+              </Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', mt: 2, opacity: 0.6 }}>
+                PI&EM System {APP_VERSION}
               </Typography>
             </Box>
           </Box>

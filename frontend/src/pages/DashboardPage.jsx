@@ -57,8 +57,20 @@ const DashboardPage = () => {
       ]);
 
       if (summaryRes.data?.success) setSummary(summaryRes.data.data);
-      if (chartsRes.data?.success) setChartData(chartsRes.data.data);
-      if (transactionsRes.data?.success) setRecentTransactions(transactionsRes.data.data.transactions || []);
+      if (chartsRes.data?.success) {
+        const raw = chartsRes.data.data;
+        setChartData({
+          // API returns category_breakdown, map to categories for DonutChartWidget
+          categories: raw?.category_breakdown ?? [],
+          // API returns trend_series with period key, map to daily_trends with date key for BarChart
+          daily_trends: (raw?.trend_series ?? []).map((item) => ({
+            date: item.period,
+            income: item.income,
+            expense: item.expense,
+          })),
+        });
+      }
+      if (transactionsRes.data?.success) setRecentTransactions(transactionsRes.data.data?.transactions ?? []);
     } catch (err) {
       console.error('[DashboardPage]: Failed to fetch dashboard data:', err);
     } finally {
@@ -84,16 +96,18 @@ const DashboardPage = () => {
         </Box>
 
         <Tooltip title="อัปเดตข้อมูลล่าสุด">
-          <Button
-            variant="outlined"
-            color="primary"
-            startIcon={<RefreshIcon />}
-            onClick={fetchDashboardData}
-            disabled={loading}
-            sx={{ borderRadius: 2.5 }}
-          >
-            รีเฟรชข้อมูล
-          </Button>
+          <span>
+            <Button
+              variant="outlined"
+              color="primary"
+              startIcon={<RefreshIcon />}
+              onClick={fetchDashboardData}
+              disabled={loading}
+              sx={{ borderRadius: 2.5 }}
+            >
+              รีเฟรชข้อมูล
+            </Button>
+          </span>
         </Tooltip>
       </Box>
 
@@ -132,7 +146,7 @@ const DashboardPage = () => {
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexGrow: 1 }}>
                 <CircularProgress size={36} color="primary" />
               </Box>
-            ) : chartData.daily_trends.length === 0 ? (
+            ) : (chartData.daily_trends ?? []).length === 0 ? (
               <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                 <BarChartIcon sx={{ fontSize: 54, color: 'text.secondary', opacity: 0.4, mb: 1 }} />
                 <Typography variant="body2" color="text.secondary">
