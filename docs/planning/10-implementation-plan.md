@@ -146,12 +146,14 @@
 * **Deliverables:** ระบบ Authentication & Authorization ปลอดภัยระดับ Production
 * **Testing Strategy:** ทดสอบ API ผ่าน Postman/Curl (Register, Login, Invalid Password, Expired Token)
 * **Acceptance Criteria:**
-  - รหัสผ่านถูก Hash ด้วย bcrypt
-  - Login สำเร็จส่งคืน JWT Access Token
-  - `authenticateToken` สกัดและฉีด `req.user.id` เข้า Controller ได้ถูกต้อง
+  - [x] รหัสผ่านถูก Hash ด้วย bcrypt ก่อนบันทึกลงฐานข้อมูล (Pass - bcrypt Salt Rounds = 10)
+  - [x] Login สำเร็จส่งคืน JWT Access Token และตั้งค่า HTTP-Only Refresh Cookie (Pass)
+  - [x] `authenticateToken` สกัดและฉีด `req.user.id` เข้า Controller ได้ถูกต้องสำหรับ Row-Level Security (Pass)
+  - [x] มี API ครบถ้วน 5 Endpoints (`register`, `login`, `logout`, `me`, `refresh`) สอดคล้องตามสัญญา API Contract `06` (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `feat: implement authentication and authorization`
 * **Risks:** ข้อผิดพลาด IDOR (Mitigation: ไม่รับ `user_id` จาก Request Body/Params บังคับใช้จาก Token เท่านั้น)
-* **Definition of Done:** API ระบบสมาชิกทำงานถูกต้องและปลอดภัย 100%
+* **Definition of Done:** API ระบบสมาชิกทำงานถูกต้องและปลอดภัย 100% (Verified)
 
 ---
 
@@ -167,11 +169,13 @@
 * **Deliverables:** API จัดการข้อมูลส่วนตัวของผู้ใช้
 * **Testing Strategy:** ทดสอบแก้ไขชื่อแสดงผล และการเปลี่ยนรหัสผ่านด้วย Password เดิมที่ถูกต้อง/ไม่ถูกต้อง
 * **Acceptance Criteria:**
-  - ผู้ใช้ดูและแก้ไขได้เฉพาะโปรไฟล์ของตนเอง
-  - เปลี่ยนรหัสผ่านสำเร็จเมื่อระบุมูลรหัสผ่านปัจจุบันถูกต้อง
+  - [x] ผู้ใช้ดูและแก้ไขได้เฉพาะโปรไฟล์ของตนเอง ยึด `req.user.id` บังคับสิทธิ์ Row-Level Security (Pass)
+  - [x] แก้ไขชื่อแสดงผลสำเร็จผ่าน `PATCH /api/v1/users/me` พร้อมระบบ Validation ความยาวไม่เกิน 100 อักษร (Pass)
+  - [x] เปลี่ยนรหัสผ่านสำเร็จเมื่อระบุมูลรหัสผ่านปัจจุบันถูกต้อง และ `new_password` ยาว ≥ 8 ตัวอักษร (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `feat: add user profile management`
 * **Risks:** รหัสผ่านใหม่ไม่ผ่านข้อกำหนดความยาว (Mitigation: ตรวจสอบ Validation ≥ 8 อักษร)
-* **Definition of Done:** API Profile ทำงานถูกต้องตามสัญญา API `06`
+* **Definition of Done:** API Profile ทำงานถูกต้องตามสัญญา API `06` (Verified)
 
 ---
 
@@ -186,10 +190,13 @@
 * **Deliverables:** API สำหรับดึงรายการหมวดหมู่การเงิน
 * **Testing Strategy:** เรียกดึงรายการหมวดหมู่แยกประเภทรายรับและรายจ่าย
 * **Acceptance Criteria:**
-  - ส่งคืนรายการหมวดหมู่ตรงตามประเภทที่ร้องขอพร้อมไอคอนและสีประจำหมวด
+  - [x] ส่งคืนรายการหมวดหมู่ตรงตามประเภทที่ร้องขอ (`income` / `expense`) พร้อมไอคอนและสีประจำหมวด (Pass)
+  - [x] ดึงรายละเอียดหมวดหมู่ตาม ID ได้ถูกต้องผ่าน `GET /api/v1/categories/:id` (Pass)
+  - [x] ปฏิเสธ Type Filter ที่ไม่ถูกต้องตอบกลับ `400 Bad Request` (`VALIDATION_ERROR`) (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `feat: implement category management`
 * **Risks:** N/A
-* **Definition of Done:** API Categories ดึงข้อมูลได้ถูกต้อง
+* **Definition of Done:** API Categories ดึงข้อมูลได้ถูกต้อง (Verified)
 
 ---
 
@@ -208,12 +215,14 @@
   - ทดสอบป้อนจำนวนเงินเป็น 0 หรือค่าลบ (ต้องตอบกลับ 400 Bad Request)
   - ทดสอบพยายามดู/แก้ไข/ลบ รายการของ User คนอื่น (ต้องตอบกลับ 403 Forbidden)
 * **Acceptance Criteria:**
-  - CRUD รายรับ-รายจ่ายทำงานถูกต้อง 100%
-  - Filter ตามประเภท หมวดหมู่ และช่วงเวลา ทำงานถูกต้อง
-  - IDOR Protection ทำงานสมบูรณ์
+  - [x] CRUD รายรับ-รายจ่ายทำงานถูกต้อง 100% (Create, Read, Update, Delete) (Pass)
+  - [x] Validation `amount > 0` และ Category type matching (`CATEGORY_TYPE_MISMATCH`) ทำงานถูกต้อง (Pass)
+  - [x] Filter ตามประเภท, หมวดหมู่, ช่วงเวลา, ค้นหาข้อความ และ Pagination ทำงานถูกต้อง (Pass)
+  - [x] IDOR Protection และ Ownership Verification ป้องกันการเข้าถึง/แก้ไข/ลบ รายการผู้อื่น (`403 Forbidden`) (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `feat: implement transaction management api`
 * **Risks:** การสวมรอยแก้ไขรายการผู้อื่น (Mitigation: ตรวจสอบ ownership `WHERE id = ? AND user_id = ?`)
-* **Definition of Done:** API Transactions ผ่านการทดสอบทุกกรณีใช้งาน
+* **Definition of Done:** API Transactions ผ่านการทดสอบทุกกรณีใช้งาน (Verified)
 
 ---
 
@@ -228,10 +237,13 @@
 * **Deliverables:** ระบบบันทึก Audit Trail เพิ่มความปลอดภัยและการตรวจสอบย้อนหลัง
 * **Testing Strategy:** ตรวจสอบ Record ในตาราง `audit_logs` หลังทำกิจกรรม Login, Create/Edit/Delete Transaction
 * **Acceptance Criteria:**
-  - บันทึกกิจกรรมสำคัญลงใน `audit_logs` พร้อม ID ผู้กระทำ เวลา และข้อมูลเปรียบเทียบ JSON ได้ถูกต้อง
+  - [x] บันทึกกิจกรรมสำคัญลงใน `audit_logs` พร้อม ID ผู้กระทำ เวลา IP Address และข้อมูลเปรียบเทียบ JSON (`old_value`, `new_value`) ได้ถูกต้อง (Pass)
+  - [x] บันทึกเหตุการณ์ Auth (`REGISTER`, `LOGIN`, `LOGOUT`) และ Transaction (`CREATE_TRANSACTION`, `UPDATE_TRANSACTION`, `DELETE_TRANSACTION`) สำเร็จ (Pass)
+  - [x] การทำงานเป็นแบบ Asynchronous Non-blocking ไม่ขัดจังหวะ Main API Response (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `feat: add audit logging`
 * **Risks:** Logging ล้มเหลวทำให้ Core API ค้าง (Mitigation: ใช้ try-catch ครอบการบันทึก Log โดยไม่ขัดจังหวะ Main Flow)
-* **Definition of Done:** Audit Logging ทำงานแบบ Asynchronous สมบูรณ์
+* **Definition of Done:** Audit Logging ทำงานแบบ Asynchronous สมบูรณ์ (Verified)
 
 ---
 
@@ -247,11 +259,15 @@
 * **Deliverables:** API คำนวณผลสรุปและกราฟสถิติความเร็วสูง
 * **Testing Strategy:** ทดสอบคำนวณยอดเงินเทียบกับการบันทึกรายการจริง และทดสอบกรณีไม่มีข้อมูล (Empty State)
 * **Acceptance Criteria:**
-  - คำนวณ `Total Income - Total Expense = Net Balance` ถูกต้อง 100%
-  - สรุปผลเฉพาะข้อมูลของผู้ใช้ปัจจุบันเท่านั้น
+  - [x] คำนวณ `Total Income - Total Expense = Net Balance` ถูกต้อง 100% (Pass)
+  - [x] สรุปผลเฉพาะข้อมูลของผู้ใช้ปัจจุบันเท่านั้น ยึด `WHERE user_id = req.user.id` (Pass)
+  - [x] คืนค่า Category Breakdown (% สัดส่วน) และ Trend Series (รายวัน/รายเดือน) สอดคล้องตามสัญญา API `06` (Pass)
+  - [x] คำนวณ Financial Report Summary (`savings_rate`, `top_expense_category`) ครบถ้วน (Pass)
+  - [x] รองรับ Empty State โดยไม่เกิด Exception เมื่อผู้ใช้ไม่มีรายการ (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `feat: implement dashboard and report api`
 * **Risks:** Query ช้าเมื่อข้อมูลมีปริมาณมาก (Mitigation: ใช้อินเด็กซ์ `idx_tx_user_type_date` ใน MySQL)
-* **Definition of Done:** API Dashboard สรุปผลถูกต้องตามสัญญา API `06`
+* **Definition of Done:** API Dashboard สรุปผลถูกต้องตามสัญญา API `06` (Verified)
 
 ---
 
@@ -268,11 +284,14 @@
 * **Deliverables:** โครงสร้างหน้าตาเว็บสไตล์ Modern Glassmorphic Responsive Layout
 * **Testing Strategy:** ทดสอบเปิดหน้าเว็บบน Desktop, Tablet, Mobile Browser และทดสอบการย่อ/ขยาย Sidebar
 * **Acceptance Criteria:**
-  - Layout สวยงาม แสดงผล Responsive ถูกต้องทุกขนาดหน้าจอ
-  - Protected Routes ทำงาน บังคับย้ายไปหน้า `/login` เมื่อยังไม่ได้ Login
+  - [x] Layout สวยงาม แสดงผล Responsive ถูกต้องทุกขนาดหน้าจอ (Desktop/Tablet/Mobile) (Pass)
+  - [x] Protected Routes ทำงาน บังคับย้ายไปหน้า `/login` เมื่อยังไม่ได้ Login (Pass)
+  - [x] ติดตั้งและตั้งค่า MUI 5 Theme (Primary `#6366F1`, Income `#10B981`, Expense `#EF4444`) (Pass)
+  - [x] รองรับ Single Page Application Routing ตามแผนงาน `07-frontend-pages.md` (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `feat: build frontend layout and routing`
 * **Risks:** MUI Theme Spacing ขัดแย้ง (Mitigation: ใช้องค์ประกอบ MUI System Spacing)
-* **Definition of Done:** Frontend Layout และ Routing พร้อมรองรับหน้าจอย่อย
+* **Definition of Done:** Frontend Layout และ Routing พร้อมรองรับหน้าจอย่อย (Verified)
 
 ---
 
@@ -288,11 +307,15 @@
 * **Deliverables:** หน้าสมัครสมาชิกและเข้าสู่ระบบที่เชื่อมต่อกับ Backend API สมบูรณ์
 * **Testing Strategy:** ทดสอบสมัครสมาชิก เข้าสู่ระบบ ล็อกเอาต์ และทดสอบเปิดหน้าย่อยหลัง Login
 * **Acceptance Criteria:**
-  - Login สำเร็จนำผู้ใช้เข้าสู่หน้า Dashboard อัตโนมัติ
-  - แสดง Alert แจ้งเตือนเมื่อกรอกอีเมล/รหัสผ่านผิด
+  - [x] Login สำเร็จนำผู้ใช้เข้าสู่หน้า Dashboard อัตโนมัติ (Pass)
+  - [x] แสดง Alert แจ้งเตือนเมื่อกรอกอีเมล/รหัสผ่านผิด (`401 Unauthorized`) (Pass)
+  - [x] สมัครสมาชิกสำเร็จนำไปหน้า Login พร้อมข้อความยืนยัน (Pass)
+  - [x] Access Token ไม่หลุดเมื่อรีเฟรชหน้าเว็บด้วยระบบ Silent Refresh จาก HTTP-Only Cookie (Pass)
+  - [x] ออกจากระบบแล้วเคลียร์ Token และกลับไปหน้า Login สำเร็จ (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `feat: implement frontend authentication`
 * **Risks:** Access Token หลุดเมื่อรีเฟรชหน้าเว็บ (Mitigation: ใช้ Silent Refresh จาก HTTP-Only Cookie)
-* **Definition of Done:** ระบบยืนยันตัวตนฝั่ง Frontend ทำงานราบรื่น 100%
+* **Definition of Done:** ระบบยืนยันตัวตนฝั่ง Frontend ทำงานราบรื่น 100% (Verified)
 
 ---
 
@@ -308,12 +331,15 @@
 * **Deliverables:** หน้าจอจัดการธุรกรรมทางการเงินที่ใช้งานง่าย รองรับทุก UX States (Loading, Empty, Error)
 * **Testing Strategy:** ทดสอบเพิ่มรายการ แก้ไขรายการ ลบรายการ ค้นหา และกรองข้อมูล
 * **Acceptance Criteria:**
-  - บันทึกรายการรายรับ-รายจ่ายได้สำเร็จ
-  - ค้นหาและกรองข้อมูลย้อนหลังแสดงผลถูกต้อง
-  - แสดง Empty State ชัดเจนเมื่อไม่พบรายการ
+  - [x] บันทึกรายการรายรับ-รายจ่ายได้สำเร็จ (Pass)
+  - [x] ค้นหาและกรองข้อมูลย้อนหลังแสดงผลถูกต้อง (Pass)
+  - [x] แสดง Empty State ชัดเจนเมื่อไม่พบรายการ (Pass)
+  - [x] ป้องกัน Category Type Mismatch ด้วยการเคลียร์ Category ID อัตโนมัติเมื่อเปลี่ยนประเภท (Pass)
+  - [x] มี Delete Confirmation Dialog ก่อนลบรายการ (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `feat: implement transaction management ui`
 * **Risks:** ฟอร์มไม่รีเซ็ตเมื่อสลับประเภทรายการ (Mitigation: เคลียร์ค่า Category ID เมื่อเปลี่ยนประเภท)
-* **Definition of Done:** UI จัดการ Transaction ทำงานสมบูรณ์แบบ
+* **Definition of Done:** UI จัดการ Transaction ทำงานสมบูรณ์แบบ (Verified)
 
 ---
 
@@ -328,11 +354,13 @@
 * **Deliverables:** หน้าแสดงหมวดหมู่และหน้าจัดการโปรไฟล์
 * **Testing Strategy:** ทดสอบสลับ Tab หมวดหมู่ และทดสอบเปลี่ยนรหัสผ่านฝั่ง Frontend
 * **Acceptance Criteria:**
-  - แสดงหมวดหมู่พร้อมไอคอนและสีถูกต้อง
-  - แก้ไขโปรไฟล์และเปลี่ยนรหัสผ่านสำเร็จ
+  - [x] แสดงหมวดหมู่พร้อมไอคอนและสีถูกต้อง (Pass)
+  - [x] แก้ไขโปรไฟล์ส่วนตัวสำเร็จ (Display Name) พร้อมอัปเดต AuthContext แบบ Real-time (Pass)
+  - [x] เปลี่ยนรหัสผ่านสำเร็จ พร้อมระบบ Validation (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `feat: implement category and profile ui`
 * **Risks:** N/A
-* **Definition of Done:** หน้า Categories และ Profile พัฒนาเสร็จสิ้น
+* **Definition of Done:** หน้า Categories และ Profile พัฒนาเสร็จสิ้น (Verified)
 
 ---
 
@@ -348,11 +376,14 @@
 * **Deliverables:** Dashboard และรายงานสรุปการเงินที่สวยงาม ทันสมัย แบบ Real-time
 * **Testing Strategy:** บันทึกรายการใหม่แล้วเปิดกลับมาดูหน้า Dashboard ตรวจสอบยอดเงินและกราฟว่าอัปเดตตรงกันหรือไม่
 * **Acceptance Criteria:**
-  - การ์ดและกราฟแสดงยอดเงินถูกต้องตรงกับข้อมูลจริงในระบบ
-  - แสดงผลลัพธ์ Responsive บน Mobile และ Desktop
+  - [x] การ์ดและกราฟแสดงยอดเงินถูกต้องตรงกับข้อมูลจริงในระบบ (Pass)
+  - [x] แสดงผลลัพธ์ Responsive บน Mobile และ Desktop ด้วย Recharts `<ResponsiveContainer>` (Pass)
+  - [x] กราฟโดนัทแสดงสัดส่วนรายจ่ายแยกหมวดหมู่พร้อม Tooltip และ Legend ภาษาไทย (Pass)
+  - [x] ตารางสรุป 5 รายการล่าสุดเชื่อมต่อไปยังหน้าประวัติรายการ (`/transactions`) (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `feat: implement dashboard and reports ui`
 * **Risks:** กราฟเบี้ยวบนจอสมาร์ตโฟน (Mitigation: ใช้องค์ประกอบ Responsive Container ใน Chart Library)
-* **Definition of Done:** Dashboard และ Report UI เสร็จสมบูรณ์
+* **Definition of Done:** Dashboard และ Report UI เสร็จสมบูรณ์ (Verified)
 
 ---
 
@@ -366,10 +397,14 @@
 * **Files / Modules:** `[MODIFY]` `docs/planning/08-dashboard-report-notification.md`
 * **Deliverables:** ข้อสรุปขอบเขตฟีเจอร์แจ้งเตือนสำหรับอนาคต
 * **Testing Strategy:** N/A
-* **Acceptance Criteria:** ไม่มี Code แจ้งเตือนหลุดเข้ามาเพิ่มความซับซ้อนใน MVP
+* **Acceptance Criteria:**
+  - [x] ยืนยันระยะ MVP ไม่มีความจำเป็นต้องพัฒนา Notification Engine เพื่อรักษาความเรียบง่าย (Pass)
+  - [x] บันทึกข้อกำหนดระบบแจ้งเตือนไว้ในเอกสาร 08-dashboard-report-notification.md เพื่อพัฒนาในเวอร์ชัน 2.0 (Pass)
+  - [x] ไม่มี Code แจ้งเตือนหลุดเข้ามาเพิ่มความซับซ้อนใน MVP (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `docs: define notification future scope`
 * **Risks:** N/A
-* **Definition of Done:** การประเมินเสร็จสิ้น
+* **Definition of Done:** การประเมินเสร็จสิ้น (Verified)
 
 ---
 
@@ -386,13 +421,16 @@
 * **Deliverables:** สภาพแวดล้อมการพัฒนา Docker Compose ที่สมบูรณ์ รันได้ด้วยคำสั่งเดียว
 * **Testing Strategy:** รันคำสั่ง `docker compose up -d --build` และตรวจสอบสถานะ `docker compose ps`
 * **Acceptance Criteria:**
-  - ทุก Container รันขึ้นสำเร็จโดยไม่มี Crash (`piem_mysql` สถานะ `healthy`)
-  - Frontend เข้าได้ที่ `http://localhost:5173`
-  - Backend API เข้าได้ที่ `http://localhost:5001/api/health`
-  - phpMyAdmin เข้าได้ที่ `http://localhost:8081` ( Host `db` Port `3306`)
+  - [x] ทุก Container รันขึ้นสำเร็จโดยไม่มี Crash (`piem_mysql` สถานะ `healthy`) (Pass)
+  - [x] Frontend เข้าได้ที่ `http://localhost:5173` (Pass)
+  - [x] Backend API เข้าได้ที่ `http://localhost:5001/api/health` (Pass)
+  - [x] phpMyAdmin เข้าได้ที่ `http://localhost:8081` (Host `db` Port `3306`) (Pass)
+  - [x] ไม่มี attribute `version` ใน `docker-compose.yml` (Pass)
+  - [x] ใช้ Anonymous Volume `/app/node_modules` ป้องกัน Host overwrite (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `chore: integrate docker development environment`
 * **Risks:** Node modules overwrite จาก Host (Mitigation: ใช้ Anonymous Volume `/app/node_modules`)
-* **Definition of Done:** สภาพแวดล้อม Docker Dev รันผ่าน 100%
+* **Definition of Done:** สภาพแวดล้อม Docker Dev รันผ่าน 100% (Verified)
 
 ---
 
@@ -407,12 +445,14 @@
 * **Deliverables:** Production Ready Single-Container Image Specification สำหรับ Railway
 * **Testing Strategy:** สั่งทดสอบ Build Image ด้วย `docker build -t piem-prod .` และสั่งรัน Container ทดสอบ
 * **Acceptance Criteria:**
-  - Build Image สำเร็จ
-  - Express สามารถเสิร์ฟทั้งหน้าเว็บ Frontend และ API ภายใน Container เดียวโดยไม่ต้องใช้ Nginx
-  - รองรับการอ่านตัวแปร `$PORT` จาก Railway
+  - [x] Build Image สำเร็จด้วยคำสั่ง `docker build -t piem-prod .` (Pass)
+  - [x] Express สามารถเสิร์ฟทั้งหน้าเว็บ Frontend และ API ภายใน Container เดียวโดยไม่ต้องใช้ Nginx (Pass)
+  - [x] รองรับการอ่านตัวแปร `$PORT` จาก Railway (Pass)
+  - [x] ติดตั้ง SPA Fallback Middleware ป้องกัน React Router 404 เมื่อ Refresh หน้าเว็บ (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `chore: prepare production railway deployment`
 * **Risks:** React Router 404 เมื่อกด Refresh หน้าเว็บ (Mitigation: เพิ่ม SPA Fallback middleware ใน Express `app.get('*')`)
-* **Definition of Done:** Root Dockerfile ผ่านการทดสอบ Build และ รัน Single Container ได้สำเร็จ
+* **Definition of Done:** Root Dockerfile ผ่านการทดสอบ Build และ รัน Single Container ได้สำเร็จ (Verified)
 
 ---
 
@@ -426,10 +466,15 @@
 * **Files / Modules:** `[NEW]` `docker-compose.prod.yml`, `nginx/default.conf`
 * **Deliverables:** คอนฟิกการปรับใช้แบบ On-Premise
 * **Testing Strategy:** สั่งรัน `docker compose -f docker-compose.prod.yml up -d` ทดสอบ
-* **Acceptance Criteria:** Nginx สตาร์ตเป็น Reverse Proxy และส่งผ่านคำขอไปยัง Backend/Frontend ได้ถูกต้อง
+* **Acceptance Criteria:**
+  - [x] Nginx สตาร์ตเป็น Reverse Proxy บนพอร์ต 80 (Pass)
+  - [x] ส่งผ่านคำขอ `/api` ไปยัง Backend Express Server ได้ถูกต้องพร้อม Proxy Headers (Pass)
+  - [x] ส่งผ่านคำขอ `/` ไปยัง Frontend Web Application ได้ถูกต้อง (Pass)
+  - [x] ไม่มี attribute `version` ใน `docker-compose.prod.yml` ตามมาตรฐาน Docker Compose v2 (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `chore: add on-premise deployment configuration`
 * **Risks:** Nginx Proxy CORS Error (Mitigation: กำหนด Header Forwarding ใน Nginx config)
-* **Definition of Done:** คอนฟิก On-Premise พร้อมใช้งาน
+* **Definition of Done:** คอนฟิก On-Premise พร้อมใช้งาน (Verified)
 
 ---
 
@@ -442,10 +487,14 @@
 * **Files / Modules:** `[NEW]` `docs/testing/e2e-test-cases.md`
 * **Deliverables:** รายงานผลการทดสอบการทำงานของระบบแบบรวมศูนย์
 * **Testing Strategy:** Manual E2E Scenario Execution
-* **Acceptance Criteria:** ผ่านทุก User Flow 100% ข้อมูลใน Dashboard สอดคล้องกับรายการบันทึกจริง
+* **Acceptance Criteria:**
+  - [x] ผ่านการทดสอบทั้ง 8 Core User Flows 100% (Pass)
+  - [x] ข้อมูลใน Dashboard และ Reports คำนวณใหม่สอดคล้องกับรายการบันทึกจริง (Pass)
+  - [x] จัดทำรายงานสรุปการทดสอบ `docs/testing/e2e-test-cases.md` (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `test: perform end-to-end integration testing`
 * **Risks:** ข้อมูลใน Dashboard ไม่ตรงกับรายการ (Mitigation: ตรวจสอบ Logic SQL Sum Query)
-* **Definition of Done:** E2E Test Scenarios ทั้งหมดผ่านการตรวจสอบ
+* **Definition of Done:** E2E Test Scenarios ทั้งหมดผ่านการตรวจสอบ (Verified)
 
 ---
 
@@ -461,11 +510,14 @@
 * **Deliverables:** รายงานผลการทดสอบความปลอดภัยและการปกป้องข้อมูลส่วนบุคคล
 * **Testing Strategy:** Penetration & Authorization Boundary Testing
 * **Acceptance Criteria:**
-  - ไม่เกิดช่องโหว่ IDOR หรือ Data Leakage ระหว่างผู้ใช้ 100%
-  - สกัดคำขอที่ผิดกฎหมายได้อย่างรวดเร็วด้วย HTTP Status 403
+  - [x] ไม่เกิดช่องโหว่ IDOR หรือ Data Leakage ระหว่างผู้ใช้ 100% (Pass)
+  - [x] สกัดคำขอที่ผิดกฎหมายได้อย่างรวดเร็วด้วย HTTP Status 403 / 404 (Pass)
+  - [x] ตรวจสอบตาราง `users` ให้แน่ใจว่าไม่มี Plaintext Password (Pass - Bcrypt Hashing)
+  - [x] จัดทำรายงานสรุปการทดสอบ `docs/testing/security-test-report.md` (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `test: verify security and user data isolation`
 * **Risks:** ข้อมูลรั่วไหลเนื่องจากขาด `user_id` constraint (Mitigation: มี Automated Test ตรวจสอบ Query)
-* **Definition of Done:** การทดสอบความปลอดภัยผ่านเกณฑ์ร้อยละ 100
+* **Definition of Done:** การทดสอบความปลอดภัยผ่านเกณฑ์ร้อยละ 100 (Verified)
 
 ---
 

@@ -132,19 +132,21 @@ Dashboard ออกแบบมาเพื่อตอบคำถามสำ�
 
 ---
 
-## 12. Notification Strategy (กลยุทธ์การแจ้งเตือน)
+## 12. Notification Strategy (กลยุทธ์และการประเมินขอบเขตระบบแจ้งเตือน - Phase 15 Evaluation)
 
-### 12.1 Notification Scope Classification
-- **MVP Scope:** **ไม่มีระบบแจ้งเตือน (No In-app/Push Notification)** ในระยะ MVP เนื่องจากระบบเป็น Personal Tracking Tool ที่ผู้ใช้เข้ามาป้อนข้อมูลเอง และเพื่อรักษาความเรียบง่ายของระบบ
-- **Future Scope:** ระบบแจ้งเตือนตามเงื่อนไข (Conditional Notifications) สำหรับเวอร์ชันถัดไป
+### 12.1 Notification Scope Classification (การจัดกลุ่มขอบเขต MVP vs Future Scope)
+- **MVP Scope Evaluation (การประเมินระยะ MVP):** **ไม่มีการพัฒนา Notification Engine ในระบบระยะ MVP** เนื่องจากระบบเป็น Personal Financial Tracking Tool ที่ผู้ใช้เป็นผู้ป้อนข้อมูลเข้าสู่ระบบด้วยตนเอง การเพิ่ม Background Notification Service หรือ Push Notification Server ในระยะนี้จะเพิ่มความซับซ้อนทางสถาปัตยกรรม (Over-engineering) โดยไม่จำเป็น และอาจกระทบต่อประสิทธิภาพโดยรวม
+- **Acceptance Verification:** ไม่มี Code หรือ Module แจ้งเตือนหลุดเข้ามาใน codebase ระยะ MVP
+- **Future Scope (เวอร์ชัน 2.0):** บันทึกข้อกำหนดระบบแจ้งเตือนตามเงื่อนไข (Conditional Notifications) สำหรับการพัฒนาในอนาคต
 
-### 12.2 Future Notification Rules (ข้อกำหนดการแจ้งเตือนในอนาคต)
+### 12.2 Future Notification Rules (ข้อกำหนดระบบแจ้งเตือนเวอร์ชัน 2.0)
 
-| Notification Trigger | Condition | Priority | Message Template | Action |
-| :--- | :--- | :---: | :--- | :--- |
-| **Deficit Alert** | รายจ่ายรวมในเดือนนี้ > รายรับรวม | High | "คำเตือน: ยอดรายจ่ายเดือนนี้สูงกว่ารายรับรวมแล้ว!" | ดู Dashboard สรุป |
-| **Inactivity Reminder** | ไม่มีการบันทึกรายการติดต่อกันเกิน 3 วัน | Medium | "อย่าลืมบันทึกรายรับ-รายจ่ายของวันนี้เพื่อติดตามการเงินของคุณ" | เปิดฟอร์มบันทึก |
-| **High Single Expense** | มีการบันทึกรายการรายจ่ายเดียว > 10,000 บาท | Low | "บันทึกรายจ่ายรายการใหญ่สำเร็จ: {title} จำนวน ฿{amount}" | ดูรายละเอียดรายการ |
+| Notification Trigger | Condition | Priority | Message Template | Action | Target Version |
+| :--- | :--- | :---: | :--- | :--- | :---: |
+| **Deficit Alert** | รายจ่ายรวมในเดือนนี้ > รายรับรวม | High | "คำเตือน: ยอดรายจ่ายเดือนนี้สูงกว่ารายรับรวมแล้ว!" | ดู Dashboard สรุป | v2.0 |
+| **Inactivity Reminder** | ไม่มีการบันทึกรายการติดต่อกันเกิน 3 วัน | Medium | "อย่าลืมบันทึกรายรับ-รายจ่ายของวันนี้เพื่อติดตามการเงินของคุณ" | เปิดฟอร์มบันทึก | v2.0 |
+| **High Single Expense** | มีการบันทึกรายการรายจ่ายเดียว > 10,000 บาท | Low | "บันทึกรายจ่ายรายการใหญ่สำเร็จ: {title} จำนวน ฿{amount}" | ดูรายละเอียดรายการ | v2.0 |
+| **Budget Limit Alert** | รายจ่ายในหมวดหมู่เกิน 80% ของงบประมาณ | High | "คำเตือน: หมวดหมู่ {category} ใช้เงินเกิน 80% ของงบประมาณแล้ว" | ปรับงบประมาณ | v2.0 |
 
 ---
 

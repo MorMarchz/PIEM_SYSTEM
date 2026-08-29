@@ -4,6 +4,12 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import pool, { checkDbConnection } from './config/db.js';
 import { notFoundHandler, errorHandler } from './middleware/error.middleware.js';
+import authRoutes from './routes/auth.routes.js';
+import userRoutes from './routes/user.routes.js';
+import categoryRoutes from './routes/category.routes.js';
+import transactionRoutes from './routes/transaction.routes.js';
+import dashboardRoutes from './routes/dashboard.routes.js';
+import reportRoutes from './routes/report.routes.js';
 
 dotenv.config();
 
@@ -32,7 +38,7 @@ app.get('/api/health', async (req, res) => {
   });
 });
 
-// Root API Endpoint Info
+// API v1 Routes
 app.get('/api/v1', (req, res) => {
   res.json({
     success: true,
@@ -40,6 +46,33 @@ app.get('/api/v1', (req, res) => {
     version: '1.0.0',
   });
 });
+
+// Module Routes
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/categories', categoryRoutes);
+app.use('/api/v1/transactions', transactionRoutes);
+app.use('/api/v1/dashboard', dashboardRoutes);
+app.use('/api/v1/reports', reportRoutes);
+
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const publicPath = path.join(__dirname, '../public');
+
+// Serve Static Frontend Assets & SPA Fallback in Production Mode
+if (fs.existsSync(publicPath)) {
+  app.use(express.static(publicPath));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
+    res.sendFile(path.join(publicPath, 'index.html'));
+  });
+}
 
 // Fallback Handlers
 app.use(notFoundHandler);

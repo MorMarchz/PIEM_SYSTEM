@@ -1,0 +1,83 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: piem_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-piem_db}
+      MYSQL_USER: ${MYSQL_USER:-piem_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-piem_password}
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db/init/01-init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-rootpassword}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - piem_net
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: piem_phpmyadmin
+    platform: linux/amd64
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - piem_net
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: piem_backend
+    ports:
+      - "5001:5001"
+    environment:
+      PORT: 5001
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: ${MYSQL_USER:-piem_user}
+      DB_PASSWORD: ${MYSQL_PASSWORD:-piem_password}
+      DB_NAME: ${MYSQL_DATABASE:-piem_db}
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - piem_net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: piem_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - piem_net
+
+networks:
+  piem_net:
+    driver: bridge
+
+volumes:
+  db_data:
