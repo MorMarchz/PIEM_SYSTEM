@@ -75,11 +75,15 @@
 * **Deliverables:** Project Structure พร้อมไฟล์คอนฟิกพื้นฐาน
 * **Testing Strategy:** ตรวจสอบความถูกต้องของโครงสร้างไฟล์ผ่าน Terminal
 * **Acceptance Criteria:**
-  - โครงสร้างโฟลเดอร์ตรงตามเอกสาร `09`
-  - มีไฟล์ `.gitignore` ที่ละเว้น `.env` และ `node_modules` อย่างถูกต้อง
+  - [x] โครงสร้างโฟลเดอร์ตรงตามเอกสาร `09` (Pass - มี `db/init/`, `backend/src/`, `frontend/`, `docs/planning/`)
+  - [x] มีไฟล์ `.gitignore` ที่ละเว้น `.env` และ `node_modules` อย่างถูกต้อง (Pass - ทดสอบ git status ไม่พบ .env ใน untracked files)
+  - [x] มีไฟล์ `.env.example` และ `.env` กำหนดพอร์ตมาตรฐาน 5173, 5001, 3307, 8081 ครบถ้วน (Pass)
+  - [x] มีไฟล์ `README.md` อธิบายโครงสร้างโปรเจกต์และวิธีติดตั้ง (Pass)
+  - [x] มีไฟล์ `package.json` สำหรับ `backend` และ `frontend` ครบถ้วน (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `chore: initialize project structure`
 * **Risks:** สะกดชื่อโฟลเดอร์ผิด (Mitigation: ยึดตาม `db/init/` และ `backend/src/server.js`)
-* **Definition of Done:** โครงสร้างโปรเจกต์และไฟล์คอนฟิกพื้นฐานพร้อมใช้งาน
+* **Definition of Done:** โครงสร้างโปรเจกต์และไฟล์คอนฟิกพื้นฐานพร้อมใช้งาน (Verified)
 
 ---
 
@@ -95,12 +99,13 @@
 * **Deliverables:** สคริปต์ SQL เริ่มต้นฐานข้อมูลที่รองรับ Charset `utf8mb4`
 * **Testing Strategy:** รันคำสั่งสคริปต์บน MySQL 8.0 เพื่อทดสอบการสร้างตารางและ Constraints
 * **Acceptance Criteria:**
-  - ตารางสร้างสำเร็จ 100% โดยไม่มีข้อผิดพลาดทาง Syntax
-  - Foreign Keys และ Unique Index `idx_users_email` ทำงานถูกต้อง
-  - มีข้อมูลหมวดหมู่ตั้งต้น (Income & Expense categories)
+  - [x] ตารางสร้างสำเร็จ 100% โดยไม่มีข้อผิดพลาดทาง Syntax (`users`, `categories`, `transactions`, `audit_logs`) (Pass)
+  - [x] Foreign Keys, CASCADE / SET NULL, CHECK `amount > 0` และ Unique Index `idx_users_email` ทำงานถูกต้อง (Pass)
+  - [x] มีข้อมูลหมวดหมู่ตั้งต้น Seed Data (Income 5 รายการ & Expense 8 รายการ) พร้อม Icon & Color (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `feat: add database schema and seed data`
 * **Risks:** ปัญหาอักขระภาษาไทยต่างดาว (Mitigation: กำหนด `CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`)
-* **Definition of Done:** สคริปต์ `01-init.sql` สมบูรณ์และรันผ่านโดยไม่มีข้อผิดพลาด
+* **Definition of Done:** สคริปต์ `01-init.sql` สมบูรณ์และรันผ่านโดยไม่มีข้อผิดพลาด (Verified)
 
 ---
 
@@ -117,11 +122,15 @@
 * **Deliverables:** Backend Express Core Server ที่เชื่อมต่อ MySQL 8 ได้สำเร็จ
 * **Testing Strategy:** เรียก `GET http://localhost:5001/api/health` ตรวจสอบ Status 200 OK
 * **Acceptance Criteria:**
-  - Express Server สตาร์ทที่ Port `5001`
-  - ระบบเชื่อมต่อ MySQL Pool สำเร็จโดยไม่มี Error
+  - [x] ตำแหน่ง Entry Point อยู่ที่ `backend/src/server.js` (Pass - ตำแหน่งบังคับถูกต้อง)
+  - [x] Express Server สตาร์ทที่ Port `5001` (Pass - Process ENV PORT 5001)
+  - [x] ไฟล์ `backend/src/config/db.js` ตั้งค่า MySQL Pool (`mysql2/promise`) เรียบร้อย (Pass)
+  - [x] มี Healthcheck Endpoint `GET /api/health` คืนค่า Standard Envelope พร้อมสถานะ DB (Pass)
+  - [x] มี 404 Route Handler และ Global Error Handler Middleware (Pass)
+* **Status:** ✅ COMPLETED & VERIFIED (PASSED)
 * **Recommended Commit:** `feat: setup backend core and database connection`
 * **Risks:** Database Connection Timeout (Mitigation: ใช้ `mysql2` connection pool พร้อม retry)
-* **Definition of Done:** Backend รันได้ที่ Port 5001 และเชื่อมต่อ MySQL สำเร็จ
+* **Definition of Done:** Backend รันได้ที่ Port 5001 และเชื่อมต่อ MySQL สำเร็จ (Verified)
 
 ---
 
