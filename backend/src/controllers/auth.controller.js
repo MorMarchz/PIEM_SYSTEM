@@ -163,7 +163,7 @@ export const login = async (req, res, next) => {
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' required for Cross-Origin (Vercel + Render)
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -205,7 +205,7 @@ export const logout = async (req, res, next) => {
     res.clearCookie('refreshToken', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' required for Cross-Origin (Vercel + Render)
     });
 
     // Log LOGOUT Audit Event

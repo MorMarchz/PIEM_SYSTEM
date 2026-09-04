@@ -1,8 +1,11 @@
 import axios from 'axios';
 
+// ดึงค่า URL จาก Environment Variable (Vercel) ถ้าไม่มีให้ใช้ Localhost
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api/v1';
+
 // Create configured Axios Instance
 const api = axios.create({
-  baseURL: '/api/v1',
+  baseURL: API_BASE_URL,
   withCredentials: true, // Allow HTTP-Only refresh token cookies
   headers: {
     'Content-Type': 'application/json',
@@ -72,8 +75,12 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        // Attempt silent refresh via HTTP-Only cookie endpoint
-        const response = await axios.post('/api/v1/auth/refresh', {}, { withCredentials: true });
+        // Attempt silent refresh via HTTP-Only cookie endpoint โดยใช้ API_BASE_URL
+        const response = await axios.post(
+          `${API_BASE_URL}/auth/refresh`,
+          {},
+          { withCredentials: true }
+        );
         const newAccessToken = response.data?.data?.access_token;
 
         if (newAccessToken) {
