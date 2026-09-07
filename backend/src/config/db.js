@@ -3,17 +3,24 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// MySQL 8 Connection Pool Setup
+// MySQL Connection Pool Setup (รองรับทั้ง Local และ Cloud MySQL ที่ใช้ SSL เช่น TiDB, PlanetScale)
+const isProduction = process.env.NODE_ENV === 'production';
+
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '3306', 10),
-  user: process.env.MYSQL_USER || process.env.DB_USER || 'piem_user',
-  password: process.env.MYSQL_PASSWORD || process.env.DB_PASSWORD || 'piem_password',
-  database: process.env.MYSQL_DATABASE || process.env.DB_NAME || 'piem_db',
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT || 4000),
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
   charset: 'utf8mb4',
+  ...(isProduction && {
+    ssl: {
+      minVersion: 'TLSv1.2',
+    },
+  }),
 });
 
 // Helper Function to Check Database Connection
