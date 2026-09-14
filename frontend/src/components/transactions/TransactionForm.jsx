@@ -46,7 +46,8 @@ const TransactionForm = ({ mode = 'create', initialData = null, transactionId = 
       try {
         const response = await api.get(`/categories?type=${type}`);
         if (response.data?.success) {
-          setCategories(response.data.data.categories || []);
+          // Backend ส่ง data เป็น Array โดยตรง ไม่ใช่ { categories: [] }
+          setCategories(Array.isArray(response.data.data) ? response.data.data : []);
         }
       } catch (err) {
         console.error('[TransactionForm]: Failed to fetch categories:', err);

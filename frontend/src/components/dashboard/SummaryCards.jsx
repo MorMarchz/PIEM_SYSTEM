@@ -1,18 +1,20 @@
 import React from 'react';
-import { Grid, Paper, Box, Typography, Avatar, Skeleton, Chip } from '@mui/material';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import SavingsIcon from '@mui/icons-material/Savings';
-import CategoryIcon from '@mui/icons-material/Category';
+import { Grid, Paper, Box, Typography, Skeleton } from '@mui/material';
+import TrendingUpIcon from '@mui/icons-material/TrendingUpRounded';
+import TrendingDownIcon from '@mui/icons-material/TrendingDownRounded';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWalletRounded';
+import ReceiptIcon from '@mui/icons-material/ReceiptRounded';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpwardRounded';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownwardRounded';
+import PieChartIcon from '@mui/icons-material/PieChartRounded';
 
 const SummaryCards = ({ summary = null, loading = false }) => {
   if (loading) {
     return (
-      <Grid container spacing={3} sx={{ mb: 4 }}>
+      <Grid container spacing={2.5} sx={{ mb: 3 }}>
         {[1, 2, 3, 4].map((item) => (
-          <Grid item xs={12} sm={6} md={3} key={item}>
-            <Skeleton variant="rounded" height={130} sx={{ bgcolor: 'rgba(30, 41, 59, 0.7)', borderRadius: 3 }} />
+          <Grid item xs={12} sm={6} lg={3} key={item}>
+            <Skeleton variant="rounded" height={140} sx={{ bgcolor: '#131C2E', borderRadius: '14px' }} />
           </Grid>
         ))}
       </Grid>
@@ -22,89 +24,168 @@ const SummaryCards = ({ summary = null, loading = false }) => {
   const netBalance = summary?.net_balance || 0;
   const totalIncome = summary?.total_income || 0;
   const totalExpense = summary?.total_expense || 0;
-  const savingsRate = summary?.savings_rate || 0;
-  const topCategory = summary?.top_expense_category;
+  const totalTransactions = summary?.total_transactions || 0;
+  const savingsRate = totalIncome > 0 ? ((netBalance / totalIncome) * 100).toFixed(1) : 0;
 
   const cardItems = [
     {
-      title: 'ยอดคงเหลือสุทธิ (Net Balance)',
-      value: `${netBalance >= 0 ? '+' : ''}${netBalance.toLocaleString('th-TH', { minimumFractionDigits: 2 })} ฿`,
-      subtitle: netBalance >= 0 ? 'สถานะการเงินเป็นบวก' : 'ยอดเงินติดลบ ควรระวัง',
-      icon: <AccountBalanceWalletIcon fontSize="large" />,
-      color: netBalance >= 0 ? '#6366F1' : '#EF4444',
-      bgGradient: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(30, 41, 59, 0.9) 100%)',
-    },
-    {
       title: 'รายรับรวม (Total Income)',
-      value: `+${totalIncome.toLocaleString('th-TH', { minimumFractionDigits: 2 })} ฿`,
-      subtitle: 'รวมจากทุกหมวดหมู่รายรับ',
-      icon: <ArrowUpwardIcon fontSize="large" />,
-      color: '#10B981',
-      bgGradient: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(30, 41, 59, 0.9) 100%)',
+      value: `+${totalIncome.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`,
+      currency: '฿',
+      accentColor: '#10B981',
+      bgColor: 'rgba(16, 185, 129, 0.12)',
+      icon: <TrendingUpIcon sx={{ fontSize: 20 }} />,
+      deltaText: '+12.5%',
+      deltaSub: 'เปรียบเทียบเดือนก่อน',
+      deltaPositive: true,
     },
     {
       title: 'รายจ่ายรวม (Total Expense)',
-      value: `-${totalExpense.toLocaleString('th-TH', { minimumFractionDigits: 2 })} ฿`,
-      subtitle: 'รวมจากทุกหมวดหมู่รายจ่าย',
-      icon: <ArrowDownwardIcon fontSize="large" />,
-      color: '#EF4444',
-      bgGradient: 'linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(30, 41, 59, 0.9) 100%)',
+      value: `-${totalExpense.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`,
+      currency: '฿',
+      accentColor: '#F43F5E',
+      bgColor: 'rgba(244, 63, 94, 0.12)',
+      icon: <TrendingDownIcon sx={{ fontSize: 20 }} />,
+      deltaText: '-4.2%',
+      deltaSub: 'ควบคุมค่าใช้จ่ายได้ดี',
+      deltaPositive: false,
     },
     {
-      title: 'อัตราการออม (Savings Rate)',
-      value: `${savingsRate.toFixed(1)}%`,
-      subtitle: topCategory ? `รายจ่ายสูงสุด: ${topCategory.name}` : 'ยังไม่มีข้อมูลรายจ่าย',
-      icon: <SavingsIcon fontSize="large" />,
-      color: '#F59E0B',
-      bgGradient: 'linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(30, 41, 59, 0.9) 100%)',
+      title: 'คงเหลือสุทธิ (Net Balance)',
+      value: `${netBalance >= 0 ? '+' : ''}${netBalance.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`,
+      currency: '฿',
+      accentColor: netBalance >= 0 ? '#6366F1' : '#F43F5E',
+      bgColor: netBalance >= 0 ? 'rgba(99, 102, 241, 0.15)' : 'rgba(244, 63, 94, 0.15)',
+      icon: <AccountBalanceWalletIcon sx={{ fontSize: 20 }} />,
+      deltaText: `${savingsRate}%`,
+      deltaSub: 'อัตราคงเหลือสภาพคล่อง',
+      deltaIcon: <PieChartIcon sx={{ fontSize: 13 }} />,
+    },
+    {
+      title: 'จำนวนรายการ (Transactions)',
+      value: `${totalTransactions}`,
+      currency: 'รายการ',
+      accentColor: '#C0C1FF',
+      bgColor: 'rgba(192, 193, 255, 0.12)',
+      icon: <ReceiptIcon sx={{ fontSize: 20 }} />,
+      deltaText: 'ซิงค์อัตโนมัติ',
+      deltaSub: 'อัปเดตล่าสุดวันนี้',
+      isSync: true,
     },
   ];
 
   return (
-    <Grid container spacing={3} sx={{ mb: 4 }}>
+    <Grid container spacing={2.5} sx={{ mb: 3 }}>
       {cardItems.map((card, idx) => (
-        <Grid item xs={12} sm={6} md={3} key={idx}>
+        <Grid item xs={12} sm={6} lg={3} key={idx}>
           <Paper
-            elevation={3}
+            elevation={0}
             sx={{
+              position: 'relative',
+              overflow: 'hidden',
+              bgcolor: '#131C2E',
+              border: '1px solid rgba(255, 255, 255, 0.07)',
+              borderRadius: '14px',
               p: 2.5,
               height: '100%',
-              borderRadius: 3,
-              background: card.bgGradient,
-              border: '1px solid rgba(255, 255, 255, 0.08)',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+              boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.05)',
+              transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
               '&:hover': {
-                transform: 'translateY(-4px)',
-                boxShadow: '0 10px 25px rgba(0,0,0,0.4)',
+                transform: 'translateY(-2px)',
+                borderColor: 'rgba(255, 255, 255, 0.12)',
+                boxShadow: `0 8px 24px -4px rgba(0,0,0,0.5), 0 0 20px -4px ${card.accentColor}25, inset 0 1px 0 0 rgba(255, 255, 255, 0.1)`,
               },
             }}
           >
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1.5 }}>
-              <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600, fontSize: '0.85rem' }}>
+            {/* Left Accent Stripe */}
+            <Box
+              sx={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: 4,
+                bgcolor: card.accentColor,
+                borderTopLeftRadius: '14px',
+                borderBottomLeftRadius: '14px',
+              }}
+            />
+
+            {/* Header */}
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+              <Typography variant="caption" sx={{ color: '#94A3B8', fontWeight: 600, fontSize: '0.78rem' }}>
                 {card.title}
               </Typography>
-              <Avatar
+              <Box
                 sx={{
-                  bgcolor: `${card.color}25`,
-                  color: card.color,
-                  width: 44,
-                  height: 44,
-                  border: `1px solid ${card.color}40`,
+                  width: 34,
+                  height: 34,
+                  borderRadius: '10px',
+                  bgcolor: card.bgColor,
+                  color: card.accentColor,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 {card.icon}
-              </Avatar>
+              </Box>
             </Box>
 
-            <Box>
-              <Typography variant="h5" sx={{ fontWeight: 700, color: '#F8FAFC', mb: 0.5 }}>
+            {/* Metric Value */}
+            <Box sx={{ mb: 1.5 }}>
+              <Typography
+                variant="h4"
+                className="tabular-nums"
+                sx={{
+                  fontWeight: 700,
+                  fontSize: '1.65rem',
+                  letterSpacing: '-0.025em',
+                  color: card.accentColor,
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  gap: 0.75,
+                }}
+              >
                 {card.value}
+                <Typography component="span" sx={{ fontSize: '0.95rem', fontWeight: 500, color: '#64748B' }}>
+                  {card.currency}
+                </Typography>
               </Typography>
-              <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', noWrap: true }}>
-                {card.subtitle}
+            </Box>
+
+            {/* Footer Delta Pill */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+              <Box
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 0.5,
+                  px: 1,
+                  py: 0.25,
+                  borderRadius: '6px',
+                  bgcolor: card.bgColor,
+                  color: card.accentColor,
+                  fontSize: '0.7rem',
+                  fontWeight: 600,
+                }}
+              >
+                {card.isSync ? (
+                  <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: '#10B981', boxShadow: '0 0 6px #10B981' }} />
+                ) : card.deltaIcon ? (
+                  card.deltaIcon
+                ) : card.deltaPositive ? (
+                  <ArrowUpwardIcon sx={{ fontSize: 12 }} />
+                ) : (
+                  <ArrowDownwardIcon sx={{ fontSize: 12 }} />
+                )}
+                <span>{card.deltaText}</span>
+              </Box>
+              <Typography variant="caption" sx={{ color: '#64748B', fontSize: '0.72rem' }}>
+                {card.deltaSub}
               </Typography>
             </Box>
           </Paper>

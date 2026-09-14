@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"secondary-fixed-dim":"#4edea3","inverse-surface":"#dfe2ee","surface-container-highest":"#31353e","tertiary":"#ffb2b7","surface-dim":"#0f131c","on-surface-variant":"#c7c4d7","surface":"#0f131c","tertiary-fixed":"#ffdadb","on-primary":"#1000a9","on-error":"#690005","surface-container-lowest":"#0a0e16","on-tertiary-container":"#5b0017","error":"#ffb4ab","primary-fixed-dim":"#c0c1ff","on-secondary-fixed":"#002113","surface-container-low":"#181c24","surface-container":"#1c2028","on-primary-fixed-variant":"#2f2ebe","on-tertiary":"#67001b","inverse-on-surface":"#2c3039","surface-variant":"#31353e","inverse-primary":"#494bd6","secondary-container":"#00a572","on-tertiary-fixed":"#40000d","error-container":"#93000a","outline":"#908fa0","tertiary-fixed-dim":"#ffb2b7","background":"#0f131c","surface-container-high":"#262a33","tertiary-container":"#ff516a","on-tertiary-fixed-variant":"#92002a","on-secondary":"#003824","surface-tint":"#c0c1ff","on-secondary-fixed-variant":"#005236","on-primary-fixed":"#07006c","on-secondary-container":"#00311f","surface-bright":"#353942","outline-variant":"#464554","on-error-container":"#ffdad6","secondary-fixed":"#6ffbbe","on-background":"#dfe2ee","on-primary-container":"#0d0096","primary-fixed":"#e1e0ff","secondary":"#4edea3","primary":"#c0c1ff","primary-container":"#8083ff","on-surface":"#dfe2ee"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"margin":"1rem","gutter-desktop":"1.5rem","margin-desktop":"2rem","gutter":"1rem","space-xl":"2rem","space-xs":"0.25rem","space-md":"0.75rem","space-sm":"0.5rem","space-lg":"1.25rem"},"fontFamily":{"mono-metric":["Inter"],"micro-code":["Inter"],"headline-sm":["Inter"],"display-lg-mobile":["Inter"],"label-sm":["Inter"],"display-lg":["Inter"],"label-md":["Inter"],"body-md":["Inter"],"body-lg":["Inter"],"headline-md":["Inter"]},"fontSize":{"mono-metric":["14px",{"lineHeight":"20px","letterSpacing":"-0.01em","fontWeight":"500"}],"micro-code":["10px",{"lineHeight":"12px","letterSpacing":"0.05em","fontWeight":"600"}],"headline-sm":["16px",{"lineHeight":"24px","letterSpacing":"-0.01em","fontWeight":"600"}],"display-lg-mobile":["26px",{"lineHeight":"34px","letterSpacing":"-0.02em","fontWeight":"600"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.02em","fontWeight":"500"}],"display-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.025em","fontWeight":"600"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.01em","fontWeight":"500"}],"body-md":["13px",{"lineHeight":"18px","letterSpacing":"0em","fontWeight":"400"}],"body-lg":["15px",{"lineHeight":"22px","letterSpacing":"-0.005em","fontWeight":"400"}],"headline-md":["20px",{"lineHeight":"28px","letterSpacing":"-0.015em","fontWeight":"600"}]}}}}</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-[240px] bg-surface-container-lowest z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.5)]"><div class="flex flex-col"><div class="h-14 px-space-md flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="PI&amp;EM Brand Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VMVo3IJ4Q2RvVImc2-bMwcw2OJceal9JYOi2MfPuWNnlzWxJHDGNbu8Wlycm5NzemfpC7zHkOVnm7EfRpbIU3r6tz2GVny56_d-fHLYEkVVn2yYscNb8eSO78-M34BLFVBGtcBrkKjlfQnc50tUoSeBNuaeNx0xEqXtBJV9hh_txNz6NTEzWfjETNJS-he696qle3sy5Qt-nIh05zk-Sz8uixfP_o5osmGWiTUIzvlG6aSYkXKlPoZXffX"/><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm tracking-tight text-on-surface font-semibold">PI&amp;EM</span><span class="px-space-xs py-0.5 rounded bg-surface-container-high text-primary font-micro-code text-micro-code uppercase tracking-wider">Finance</span></div></div></div><div class="px-space-md py-space-xs"><span class="font-micro-code text-micro-code uppercase text-outline font-semibold tracking-wider px-space-sm">Workspace</span></div><nav class="flex flex-col gap-1 px-space-sm mt-space-xs" data-active-classes="bg-primary-container text-on-primary font-medium rounded-lg"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">grid_view</span><span class="font-body-md text-body-md">Dashboard</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="transactions" href="#"><span class="material-symbols-outlined text-[18px]">receipt_long</span><span class="font-body-md text-body-md">Transactions</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-2 transition-colors bg-primary-container text-on-primary font-medium rounded-lg" data-path="categories" href="#"><span class="material-symbols-outlined text-[18px]">category</span><span class="font-body-md text-body-md">Categories</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="reports" href="#"><span class="material-symbols-outlined text-[18px]">monitoring</span><span class="font-body-md text-body-md">Reports</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="profile" href="#"><span class="material-symbols-outlined text-[18px]">account_circle</span><span class="font-body-md text-body-md">Profile</span></a></nav></div><div class="p-space-sm m-space-sm rounded-xl bg-surface-container-low"><div class="flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="relative"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH50-NvIbVZi69bfCDWvt0MH7-C03O1XdOeP2nfXwcN6GPXvMyLkpeN-_w3bnoU2dsKCfIlI5oZ9Ykuj0BkUvk5tOOKTEoUExpgRgdX0XlLJyJKeg2fmpJu6e3N9BwiG-nGuoIstIhoHeCP83QrbcIqhUIhyUIsTkzI1On4zI-4u9GZakcQDYKWJNuRea_6adWSNO16XQNxJug9V8k1cVHvTLJ890gjeKIjooRqCCagJAy_q7xXxVv9g"/><span class="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-secondary ring-2 ring-surface-container-low"></span></div><div class="flex flex-col min-w-0"><span class="font-label-md text-label-md text-on-surface truncate font-semibold">March</span><span class="font-label-sm text-label-sm text-on-surface-variant truncate">sorawich0027@gmail.com</span></div></div><span class="material-symbols-outlined text-outline text-[18px]">unfold_more</span></div></div></aside><div class="pl-[240px]"><header class="fixed top-0 left-[240px] right-0 h-14 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.3)] z-40 flex items-center justify-between px-gutter-desktop"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs font-label-md text-label-md text-on-surface-variant"><span class="hover:text-on-surface transition-colors cursor-pointer">PI&amp;EM</span><span class="text-outline">/</span><span class="text-on-surface font-medium">Console</span></div><div class="flex items-center gap-1.5 px-space-xs py-0.5 rounded-full bg-surface-container-high"><span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span><span class="font-micro-code text-micro-code text-on-surface font-medium">Live Sync</span></div></div><div class="flex items-center gap-space-sm"><button class="flex items-center gap-space-xs px-space-sm h-8 rounded-lg bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">search</span><span class="font-label-sm text-label-sm">Search...</span><kbd class="px-1 rounded bg-surface-container-highest text-on-surface-variant font-micro-code text-micro-code">⌘K</kbd></button><button class="relative p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">notifications</span><span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-tertiary-container"></span></button><button class="flex items-center gap-1 px-space-sm h-8 rounded-lg bg-primary text-on-primary hover:bg-primary-container font-label-md text-label-md transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">add</span><span>New Entry</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover ml-space-xs" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH50-NvIbVZi69bfCDWvt0MH7-C03O1XdOeP2nfXwcN6GPXvMyLkpeN-_w3bnoU2dsKCfIlI5oZ9Ykuj0BkUvk5tOOKTEoUExpgRgdX0XlLJyJKeg2fmpJu6e3N9BwiG-nGuoIstIhoHeCP83QrbcIqhUIhyUIsTkzI1On4zI-4u9GZakcQDYKWJNuRea_6adWSNO16XQNxJug9V8k1cVHvTLJ890gjeKIjooRqCCagJAy_q7xXxVv9g"/></div></header><main class="w-full pt-14 px-gutter-desktop bg-surface"><div class="flex flex-col w-full pb-space-xl">
+<!-- Top Command & Action Bar -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md pt-space-lg pb-space-xl">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="px-space-xs py-0.5 rounded bg-primary/10 text-primary font-micro-code text-micro-code uppercase tracking-wider">Classification &amp; Taxonomies</span>
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+<span class="font-mono-metric text-label-sm text-outline">v2.4.0 Live</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface tracking-tight font-semibold">หมวดหมู่การเงิน</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+        จัดการหมวดหมู่รายรับและรายจ่ายเพื่อวิเคราะห์พฤติกรรมการเงินได้แม่นยำ พร้อมตั้งค่าแท็กและเพดานงบประมาณอัตโนมัติ
+      </p>
+</div>
+<!-- Right Controls -->
+<div class="flex items-center gap-space-sm self-start md:self-auto">
+<button class="flex items-center gap-space-xs px-space-md h-9 rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container shadow-md transition-all" id="openAddModalBtn" type="button">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>เพิ่มหมวดหมู่ใหม่</span>
+</button>
+</div>
+</div>
+<!-- Filter & Analytics Summary Shelf -->
+<div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-space-md mb-space-lg">
+<!-- Filter Tabs (Pills) -->
+<div class="inline-flex items-center p-1 rounded-xl bg-surface-container-lowest shadow-inner" id="filterContainer">
+<button class="filter-pill flex items-center gap-space-xs px-space-md py-1.5 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-semibold transition-all" data-filter="all" type="button">
+<span>ทั้งหมด</span>
+<span class="px-1.5 py-0.5 rounded-full bg-primary-container/60 text-on-primary font-mono-metric text-micro-code">13</span>
+</button>
+<button class="filter-pill flex items-center gap-space-xs px-space-md py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" data-filter="income" type="button">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>รายรับ</span>
+<span class="px-1.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-mono-metric text-micro-code">5</span>
+</button>
+<button class="filter-pill flex items-center gap-space-xs px-space-md py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" data-filter="expense" type="button">
+<span class="w-2 h-2 rounded-full bg-tertiary-container"></span>
+<span>รายจ่าย</span>
+<span class="px-1.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-mono-metric text-micro-code">8</span>
+</button>
+</div>
+<!-- Metric Spark Counters -->
+<div class="flex items-center gap-space-lg w-full lg:w-auto overflow-x-auto pb-1 lg:pb-0">
+<div class="flex items-center gap-space-sm px-space-md py-1.5 rounded-xl bg-surface-container-low shadow-sm">
+<span class="material-symbols-outlined text-secondary text-[18px]">trending_up</span>
+<div class="flex flex-col">
+<span class="font-micro-code text-micro-code uppercase text-outline">รวมกระแสรายรับ</span>
+<span class="font-mono-metric text-label-md text-secondary font-semibold">฿64,700</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm px-space-md py-1.5 rounded-xl bg-surface-container-low shadow-sm">
+<span class="material-symbols-outlined text-tertiary-container text-[18px]">trending_down</span>
+<div class="flex flex-col">
+<span class="font-micro-code text-micro-code uppercase text-outline">รวมกระแสรายจ่าย</span>
+<span class="font-mono-metric text-label-md text-tertiary font-semibold">฿21,390</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm px-space-md py-1.5 rounded-xl bg-surface-container-low shadow-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">account_balance_wallet</span>
+<div class="flex flex-col">
+<span class="font-micro-code text-micro-code uppercase text-outline">ยอดคงเหลือสุทธิ</span>
+<span class="font-mono-metric text-label-md text-on-surface font-semibold">+฿43,310</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bento Categories Grid (4 Columns Responsive) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-space-md" id="categoriesGrid">
+<!-- Card 1: เงินเดือน -->
+<div class="category-card group relative flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all shadow-sm hover:shadow-md overflow-hidden" data-type="income">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary"></div>
+<div class="flex flex-col gap-space-md">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="flex items-center justify-center w-10 h-10 rounded-xl bg-secondary/10 text-xl">💼</span>
+<div class="flex flex-col min-w-0">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">เงินเดือน</h3>
+<span class="font-micro-code text-micro-code text-outline uppercase tracking-wider">Salary &amp; Wages</span>
+</div>
+</div>
+<div class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors" title="แก้ไข" type="button">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded text-outline hover:text-tertiary hover:bg-tertiary-container/10 transition-colors" title="ลบ" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-secondary/10 text-secondary font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            รายรับ
+          </span>
+<span class="font-mono-metric text-label-sm text-on-surface-variant">3 รายการ</span>
+</div>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-end justify-between bg-surface-container-lowest/40 -mx-space-lg -mb-space-lg p-space-md">
+<span class="font-micro-code text-micro-code uppercase text-outline">ยอดรวมสะสม</span>
+<span class="font-mono-metric text-headline-sm text-secondary font-semibold">฿35,000</span>
+</div>
+</div>
+<!-- Card 2: อาหาร & เครื่องดื่ม -->
+<div class="category-card group relative flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all shadow-sm hover:shadow-md overflow-hidden" data-type="expense">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-tertiary-container"></div>
+<div class="flex flex-col gap-space-md">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="flex items-center justify-center w-10 h-10 rounded-xl bg-tertiary-container/10 text-xl">🍔</span>
+<div class="flex flex-col min-w-0">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">อาหาร &amp; เครื่องดื่ม</h3>
+<span class="font-micro-code text-micro-code text-outline uppercase tracking-wider">Food &amp; Dining</span>
+</div>
+</div>
+<div class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors" title="แก้ไข" type="button">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded text-outline hover:text-tertiary hover:bg-tertiary-container/10 transition-colors" title="ลบ" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-tertiary-container/15 text-tertiary font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+            รายจ่าย
+          </span>
+<span class="font-mono-metric text-label-sm text-on-surface-variant">18 รายการ</span>
+</div>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-end justify-between bg-surface-container-lowest/40 -mx-space-lg -mb-space-lg p-space-md">
+<span class="font-micro-code text-micro-code uppercase text-outline">ยอดรวมสะสม</span>
+<span class="font-mono-metric text-headline-sm text-tertiary font-semibold">฿4,200</span>
+</div>
+</div>
+<!-- Card 3: งานฟรีแลนซ์ -->
+<div class="category-card group relative flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all shadow-sm hover:shadow-md overflow-hidden" data-type="income">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+<div class="flex flex-col gap-space-md">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 text-xl">🎨</span>
+<div class="flex flex-col min-w-0">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">งานฟรีแลนซ์</h3>
+<span class="font-micro-code text-micro-code text-outline uppercase tracking-wider">Freelance Projects</span>
+</div>
+</div>
+<div class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors" title="แก้ไข" type="button">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded text-outline hover:text-tertiary hover:bg-tertiary-container/10 transition-colors" title="ลบ" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-secondary/10 text-secondary font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            รายรับ
+          </span>
+<span class="font-mono-metric text-label-sm text-on-surface-variant">4 รายการ</span>
+</div>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-end justify-between bg-surface-container-lowest/40 -mx-space-lg -mb-space-lg p-space-md">
+<span class="font-micro-code text-micro-code uppercase text-outline">ยอดรวมสะสม</span>
+<span class="font-mono-metric text-headline-sm text-secondary font-semibold">฿18,500</span>
+</div>
+</div>
+<!-- Card 4: ค่าที่พัก & สาธารณูปโภค -->
+<div class="category-card group relative flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all shadow-sm hover:shadow-md overflow-hidden" data-type="expense">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-tertiary"></div>
+<div class="flex flex-col gap-space-md">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="flex items-center justify-center w-10 h-10 rounded-xl bg-tertiary/10 text-xl">🏠</span>
+<div class="flex flex-col min-w-0">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">ค่าที่พัก &amp; สาธารณูปโภค</h3>
+<span class="font-micro-code text-micro-code text-outline uppercase tracking-wider">Housing &amp; Utilities</span>
+</div>
+</div>
+<div class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors" title="แก้ไข" type="button">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded text-outline hover:text-tertiary hover:bg-tertiary-container/10 transition-colors" title="ลบ" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-tertiary-container/15 text-tertiary font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+            รายจ่าย
+          </span>
+<span class="font-mono-metric text-label-sm text-on-surface-variant">2 รายการ</span>
+</div>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-end justify-between bg-surface-container-lowest/40 -mx-space-lg -mb-space-lg p-space-md">
+<span class="font-micro-code text-micro-code uppercase text-outline">ยอดรวมสะสม</span>
+<span class="font-mono-metric text-headline-sm text-tertiary font-semibold">฿6,800</span>
+</div>
+</div>
+<!-- Card 5: เงินปันผล & ดอกเบี้ย -->
+<div class="category-card group relative flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all shadow-sm hover:shadow-md overflow-hidden" data-type="income">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary-container"></div>
+<div class="flex flex-col gap-space-md">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="flex items-center justify-center w-10 h-10 rounded-xl bg-secondary-container/10 text-xl">📈</span>
+<div class="flex flex-col min-w-0">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">เงินปันผล &amp; ดอกเบี้ย</h3>
+<span class="font-micro-code text-micro-code text-outline uppercase tracking-wider">Dividends &amp; Yield</span>
+</div>
+</div>
+<div class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors" title="แก้ไข" type="button">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded text-outline hover:text-tertiary hover:bg-tertiary-container/10 transition-colors" title="ลบ" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-secondary/10 text-secondary font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            รายรับ
+          </span>
+<span class="font-mono-metric text-label-sm text-on-surface-variant">1 รายการ</span>
+</div>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-end justify-between bg-surface-container-lowest/40 -mx-space-lg -mb-space-lg p-space-md">
+<span class="font-micro-code text-micro-code uppercase text-outline">ยอดรวมสะสม</span>
+<span class="font-mono-metric text-headline-sm text-secondary font-semibold">฿1,200</span>
+</div>
+</div>
+<!-- Card 6: การเดินทาง & ยานพาหนะ -->
+<div class="category-card group relative flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all shadow-sm hover:shadow-md overflow-hidden" data-type="expense">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary-container"></div>
+<div class="flex flex-col gap-space-md">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="flex items-center justify-center w-10 h-10 rounded-xl bg-primary-container/10 text-xl">🚆</span>
+<div class="flex flex-col min-w-0">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">การเดินทาง &amp; ยานพาหนะ</h3>
+<span class="font-micro-code text-micro-code text-outline uppercase tracking-wider">Transport &amp; Gas</span>
+</div>
+</div>
+<div class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors" title="แก้ไข" type="button">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded text-outline hover:text-tertiary hover:bg-tertiary-container/10 transition-colors" title="ลบ" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-tertiary-container/15 text-tertiary font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+            รายจ่าย
+          </span>
+<span class="font-mono-metric text-label-sm text-on-surface-variant">12 รายการ</span>
+</div>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-end justify-between bg-surface-container-lowest/40 -mx-space-lg -mb-space-lg p-space-md">
+<span class="font-micro-code text-micro-code uppercase text-outline">ยอดรวมสะสม</span>
+<span class="font-mono-metric text-headline-sm text-tertiary font-semibold">฿2,450</span>
+</div>
+</div>
+<!-- Card 7: เทคโนโลยี & ซอฟต์แวร์ -->
+<div class="category-card group relative flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all shadow-sm hover:shadow-md overflow-hidden" data-type="expense">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary-fixed-dim"></div>
+<div class="flex flex-col gap-space-md">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="flex items-center justify-center w-10 h-10 rounded-xl bg-primary-fixed-dim/10 text-xl">💻</span>
+<div class="flex flex-col min-w-0">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">เทคโนโลยี &amp; ซอฟต์แวร์</h3>
+<span class="font-micro-code text-micro-code text-outline uppercase tracking-wider">Tech &amp; Subscriptions</span>
+</div>
+</div>
+<div class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors" title="แก้ไข" type="button">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded text-outline hover:text-tertiary hover:bg-tertiary-container/10 transition-colors" title="ลบ" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-tertiary-container/15 text-tertiary font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+            รายจ่าย
+          </span>
+<span class="font-mono-metric text-label-sm text-on-surface-variant">5 รายการ</span>
+</div>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-end justify-between bg-surface-container-lowest/40 -mx-space-lg -mb-space-lg p-space-md">
+<span class="font-micro-code text-micro-code uppercase text-outline">ยอดรวมสะสม</span>
+<span class="font-mono-metric text-headline-sm text-tertiary font-semibold">฿1,890</span>
+</div>
+</div>
+<!-- Card 8: ช้อปปิ้ง & ไลฟ์สไตล์ -->
+<div class="category-card group relative flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all shadow-sm hover:shadow-md overflow-hidden" data-type="expense">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary-fixed"></div>
+<div class="flex flex-col gap-space-md">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="flex items-center justify-center w-10 h-10 rounded-xl bg-secondary-fixed/10 text-xl">🛍️</span>
+<div class="flex flex-col min-w-0">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">ช้อปปิ้ง &amp; ไลฟ์สไตล์</h3>
+<span class="font-micro-code text-micro-code text-outline uppercase tracking-wider">Lifestyle &amp; Retail</span>
+</div>
+</div>
+<div class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors" title="แก้ไข" type="button">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded text-outline hover:text-tertiary hover:bg-tertiary-container/10 transition-colors" title="ลบ" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-tertiary-container/15 text-tertiary font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+            รายจ่าย
+          </span>
+<span class="font-mono-metric text-label-sm text-on-surface-variant">7 รายการ</span>
+</div>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-end justify-between bg-surface-container-lowest/40 -mx-space-lg -mb-space-lg p-space-md">
+<span class="font-micro-code text-micro-code uppercase text-outline">ยอดรวมสะสม</span>
+<span class="font-mono-metric text-headline-sm text-tertiary font-semibold">฿3,100</span>
+</div>
+</div>
+<!-- Card 9: โบนัส & รางวัล -->
+<div class="category-card group relative flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all shadow-sm hover:shadow-md overflow-hidden" data-type="income">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary-fixed-dim"></div>
+<div class="flex flex-col gap-space-md">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="flex items-center justify-center w-10 h-10 rounded-xl bg-secondary-fixed-dim/10 text-xl">🎁</span>
+<div class="flex flex-col min-w-0">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">โบนัส &amp; รางวัล</h3>
+<span class="font-micro-code text-micro-code text-outline uppercase tracking-wider">Incentives &amp; Bonus</span>
+</div>
+</div>
+<div class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors" title="แก้ไข" type="button">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded text-outline hover:text-tertiary hover:bg-tertiary-container/10 transition-colors" title="ลบ" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-secondary/10 text-secondary font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            รายรับ
+          </span>
+<span class="font-mono-metric text-label-sm text-on-surface-variant">1 รายการ</span>
+</div>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-end justify-between bg-surface-container-lowest/40 -mx-space-lg -mb-space-lg p-space-md">
+<span class="font-micro-code text-micro-code uppercase text-outline">ยอดรวมสะสม</span>
+<span class="font-mono-metric text-headline-sm text-secondary font-semibold">฿10,000</span>
+</div>
+</div>
+<!-- Card 10: สุขภาพ & ประกันภัย -->
+<div class="category-card group relative flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all shadow-sm hover:shadow-md overflow-hidden" data-type="expense">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-tertiary"></div>
+<div class="flex flex-col gap-space-md">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="flex items-center justify-center w-10 h-10 rounded-xl bg-tertiary/10 text-xl">💊</span>
+<div class="flex flex-col min-w-0">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">สุขภาพ &amp; ประกันภัย</h3>
+<span class="font-micro-code text-micro-code text-outline uppercase tracking-wider">Medical &amp; Insurance</span>
+</div>
+</div>
+<div class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors" title="แก้ไข" type="button">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded text-outline hover:text-tertiary hover:bg-tertiary-container/10 transition-colors" title="ลบ" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-tertiary-container/15 text-tertiary font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+            รายจ่าย
+          </span>
+<span class="font-mono-metric text-label-sm text-on-surface-variant">2 รายการ</span>
+</div>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-end justify-between bg-surface-container-lowest/40 -mx-space-lg -mb-space-lg p-space-md">
+<span class="font-micro-code text-micro-code uppercase text-outline">ยอดรวมสะสม</span>
+<span class="font-mono-metric text-headline-sm text-tertiary font-semibold">฿2,500</span>
+</div>
+</div>
+<!-- Card 11: การเรียนรู้ & หนังสือ -->
+<div class="category-card group relative flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all shadow-sm hover:shadow-md overflow-hidden" data-type="expense">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+<div class="flex flex-col gap-space-md">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 text-xl">📚</span>
+<div class="flex flex-col min-w-0">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">การเรียนรู้ &amp; หนังสือ</h3>
+<span class="font-micro-code text-micro-code text-outline uppercase tracking-wider">Education &amp; Growth</span>
+</div>
+</div>
+<div class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors" title="แก้ไข" type="button">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded text-outline hover:text-tertiary hover:bg-tertiary-container/10 transition-colors" title="ลบ" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-tertiary-container/15 text-tertiary font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+            รายจ่าย
+          </span>
+<span class="font-mono-metric text-label-sm text-on-surface-variant">3 รายการ</span>
+</div>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-end justify-between bg-surface-container-lowest/40 -mx-space-lg -mb-space-lg p-space-md">
+<span class="font-micro-code text-micro-code uppercase text-outline">ยอดรวมสะสม</span>
+<span class="font-mono-metric text-headline-sm text-tertiary font-semibold">฿950</span>
+</div>
+</div>
+<!-- Card 12: อื่นๆ / เบ็ดเตล็ด -->
+<div class="category-card group relative flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all shadow-sm hover:shadow-md overflow-hidden" data-type="expense">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-outline"></div>
+<div class="flex flex-col gap-space-md">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="flex items-center justify-center w-10 h-10 rounded-xl bg-outline/10 text-xl">🤝</span>
+<div class="flex flex-col min-w-0">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">อื่นๆ / เบ็ดเตล็ด</h3>
+<span class="font-micro-code text-micro-code text-outline uppercase tracking-wider">General &amp; Sundry</span>
+</div>
+</div>
+<div class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors" title="แก้ไข" type="button">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded text-outline hover:text-tertiary hover:bg-tertiary-container/10 transition-colors" title="ลบ" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-tertiary-container/15 text-tertiary font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+            รายจ่าย
+          </span>
+<span class="font-mono-metric text-label-sm text-on-surface-variant">1 รายการ</span>
+</div>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-end justify-between bg-surface-container-lowest/40 -mx-space-lg -mb-space-lg p-space-md">
+<span class="font-micro-code text-micro-code uppercase text-outline">ยอดรวมสะสม</span>
+<span class="font-mono-metric text-headline-sm text-tertiary font-semibold">฿350</span>
+</div>
+</div>
+</div>
+<!-- Real-time Modal: Add / Edit Category (Raycast-Style Window Overlay) -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-surface-container-lowest/80 backdrop-blur-md transition-opacity duration-200 opacity-0 pointer-events-none p-space-md" id="categoryModal">
+<div class="relative w-full max-w-xl rounded-2xl bg-surface-container-low shadow-2xl p-space-xl flex flex-col gap-space-lg transform scale-95 transition-transform duration-200" id="modalWindow">
+<!-- Modal Header -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-[20px]">category</span>
+</div>
+<div class="flex flex-col">
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">เพิ่มหมวดหมู่ใหม่</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant">กำหนดประเภท ไอคอน และชุดสีประจำหมวดหมู่</span>
+</div>
+</div>
+<button class="p-1 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors" id="closeModalBtn" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Segmented Type Selector -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-sm text-label-sm text-outline uppercase tracking-wider font-semibold">ประเภทกระแสเงิน</label>
+<div class="grid grid-cols-2 p-1 rounded-xl bg-surface-container-lowest" id="typeSegmented">
+<button class="flex items-center justify-center gap-space-xs py-2 rounded-lg bg-surface-container-high text-tertiary font-label-md text-label-md font-semibold transition-all shadow-sm" id="typeExpenseBtn" type="button">
+<span class="w-2 h-2 rounded-full bg-tertiary-container"></span>
+<span>รายจ่าย (Expense)</span>
+</button>
+<button class="flex items-center justify-center gap-space-xs py-2 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md font-semibold transition-all" id="typeIncomeBtn" type="button">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>รายรับ (Income)</span>
+</button>
+</div>
+</div>
+<!-- Name & Emoji Fields Grid -->
+<div class="grid grid-cols-4 gap-space-md">
+<div class="col-span-1 flex flex-col gap-space-xs">
+<label class="font-label-sm text-label-sm text-outline uppercase tracking-wider font-semibold">ไอคอน</label>
+<input class="h-10 text-center text-xl rounded-lg bg-surface-container-lowest text-on-surface font-semibold focus:bg-surface-container-highest focus:text-primary outline-none transition-all shadow-inner" id="inputEmoji" maxlength="2" type="text" value="☕"/>
+</div>
+<div class="col-span-3 flex flex-col gap-space-xs">
+<label class="font-label-sm text-label-sm text-outline uppercase tracking-wider font-semibold">ชื่อหมวดหมู่</label>
+<input class="h-10 px-space-md rounded-lg bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:bg-surface-container-highest focus:text-on-surface outline-none transition-all shadow-inner" id="inputName" placeholder="เช่น กาแฟ &amp; คาเฟ่" type="text" value="กาแฟ &amp; ของว่าง"/>
+</div>
+</div>
+<!-- Color Swatches Selection -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-sm text-label-sm text-outline uppercase tracking-wider font-semibold">แถบสีประจำหมวดหมู่</label>
+<div class="flex items-center gap-space-sm" id="colorPalette">
+<button class="swatch-btn w-8 h-8 rounded-full bg-tertiary-container ring-2 ring-primary-container ring-offset-2 ring-offset-surface-container-low transition-all scale-105" data-color="bg-tertiary-container" type="button"></button>
+<button class="swatch-btn w-8 h-8 rounded-full bg-secondary transition-all opacity-80 hover:opacity-100 hover:scale-105" data-color="bg-secondary" type="button"></button>
+<button class="swatch-btn w-8 h-8 rounded-full bg-primary transition-all opacity-80 hover:opacity-100 hover:scale-105" data-color="bg-primary" type="button"></button>
+<button class="swatch-btn w-8 h-8 rounded-full bg-primary-container transition-all opacity-80 hover:opacity-100 hover:scale-105" data-color="bg-primary-container" type="button"></button>
+<button class="swatch-btn w-8 h-8 rounded-full bg-secondary-fixed transition-all opacity-80 hover:opacity-100 hover:scale-105" data-color="bg-secondary-fixed" type="button"></button>
+<button class="swatch-btn w-8 h-8 rounded-full bg-outline transition-all opacity-80 hover:opacity-100 hover:scale-105" data-color="bg-outline" type="button"></button>
+</div>
+</div>
+<!-- Realtime Live Card Preview Box -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider font-semibold">ตัวอย่างการแสดงผลแบบเรียลไทม์</span>
+<span class="font-micro-code text-micro-code text-secondary font-mono-metric flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+            Syncing Preview
+          </span>
+</div>
+<div class="p-space-lg rounded-xl bg-surface-container-lowest relative overflow-hidden shadow-inner" id="liveCardPreview">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-tertiary-container" id="previewAccent"></div>
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="flex items-center justify-center w-10 h-10 rounded-xl bg-surface-container-high text-xl" id="previewEmoji">☕</span>
+<div class="flex flex-col min-w-0">
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-semibold" id="previewTitle">กาแฟ &amp; ของว่าง</h4>
+<span class="font-micro-code text-micro-code text-outline uppercase tracking-wider">Custom Category</span>
+</div>
+</div>
+<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-tertiary-container/15 text-tertiary font-label-sm text-label-sm font-semibold" id="previewBadge">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+              รายจ่าย
+            </span>
+</div>
+<div class="mt-space-md flex items-end justify-between pt-space-sm">
+<span class="font-mono-metric text-label-sm text-outline">0 รายการใหม่</span>
+<span class="font-mono-metric text-headline-sm text-tertiary font-semibold">฿0.00</span>
+</div>
+</div>
+</div>
+<!-- Action Footer -->
+<div class="flex items-center justify-end gap-space-sm pt-space-xs">
+<button class="px-space-md h-9 rounded-lg bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" id="cancelModalBtn" type="button">
+          ยกเลิก
+        </button>
+<button class="flex items-center gap-space-xs px-space-lg h-9 rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container shadow-md transition-all" id="submitModalBtn" type="button">
+<span class="material-symbols-outlined text-[18px]">check</span>
+<span>บันทึกหมวดหมู่</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function initCategorySystem() {
+    // Modal Element references
+    const modal = document.getElementById('categoryModal');
+    const modalWindow = document.getElementById('modalWindow');
+    const openBtn = document.getElementById('openAddModalBtn');
+    const closeBtn = document.getElementById('closeModalBtn');
+    const cancelBtn = document.getElementById('cancelModalBtn');
+    const submitBtn = document.getElementById('submitModalBtn');
+
+    // Input elements
+    const inputEmoji = document.getElementById('inputEmoji');
+    const inputName = document.getElementById('inputName');
+    const previewEmoji = document.getElementById('previewEmoji');
+    const previewTitle = document.getElementById('previewTitle');
+    const previewAccent = document.getElementById('previewAccent');
+    const previewBadge = document.getElementById('previewBadge');
+
+    // Segmented Type Buttons
+    const typeExpenseBtn = document.getElementById('typeExpenseBtn');
+    const typeIncomeBtn = document.getElementById('typeIncomeBtn');
+
+    let currentType = 'expense';
+    let currentColor = 'bg-tertiary-container';
+
+    // Toggle Modal State
+    function toggleModal(show) {
+      if (show) {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100', 'pointer-events-auto');
+        modalWindow.classList.remove('scale-95');
+        modalWindow.classList.add('scale-100');
+        inputName.focus();
+      } else {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modal.classList.remove('opacity-100', 'pointer-events-auto');
+        modalWindow.classList.add('scale-95');
+        modalWindow.classList.remove('scale-100');
+      }
+    }
+
+    if (openBtn) openBtn.addEventListener('click', () => toggleModal(true));
+    if (closeBtn) closeBtn.addEventListener('click', () => toggleModal(false));
+    if (cancelBtn) cancelBtn.addEventListener('click', () => toggleModal(false));
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) toggleModal(false);
+    });
+
+    // Live typing updates
+    if (inputEmoji) {
+      inputEmoji.addEventListener('input', (e) => {
+        previewEmoji.textContent = e.target.value.trim() || '📁';
+      });
+    }
+
+    if (inputName) {
+      inputName.addEventListener('input', (e) => {
+        previewTitle.textContent = e.target.value.trim() || 'หมวดหมู่ใหม่';
+      });
+    }
+
+    // Segmented switches
+    if (typeExpenseBtn && typeIncomeBtn) {
+      typeExpenseBtn.addEventListener('click', () => {
+        currentType = 'expense';
+        typeExpenseBtn.className = 'flex items-center justify-center gap-space-xs py-2 rounded-lg bg-surface-container-high text-tertiary font-label-md text-label-md font-semibold transition-all shadow-sm';
+        typeIncomeBtn.className = 'flex items-center justify-center gap-space-xs py-2 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md font-semibold transition-all';
+        
+        previewBadge.className = 'inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-tertiary-container/15 text-tertiary font-label-sm text-label-sm font-semibold';
+        previewBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>รายจ่าย';
+      });
+
+      typeIncomeBtn.addEventListener('click', () => {
+        currentType = 'income';
+        typeIncomeBtn.className = 'flex items-center justify-center gap-space-xs py-2 rounded-lg bg-surface-container-high text-secondary font-label-md text-label-md font-semibold transition-all shadow-sm';
+        typeExpenseBtn.className = 'flex items-center justify-center gap-space-xs py-2 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md font-semibold transition-all';
+        
+        previewBadge.className = 'inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-secondary/10 text-secondary font-label-sm text-label-sm font-semibold';
+        previewBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>รายรับ';
+      });
+    }
+
+    // Color Swatches
+    const swatchButtons = document.querySelectorAll('.swatch-btn');
+    swatchButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        swatchButtons.forEach(b => {
+          b.classList.remove('ring-2', 'ring-primary-container', 'ring-offset-2', 'ring-offset-surface-container-low', 'scale-105');
+          b.classList.add('opacity-80');
+        });
+        btn.classList.add('ring-2', 'ring-primary-container', 'ring-offset-2', 'ring-offset-surface-container-low', 'scale-105');
+        btn.classList.remove('opacity-80');
+        
+        currentColor = btn.getAttribute('data-color');
+        previewAccent.className = `absolute left-0 top-0 bottom-0 w-1.5 ${currentColor}`;
+      });
+    });
+
+    // Interactive Submit Simulation
+    if (submitBtn) {
+      submitBtn.addEventListener('click', () => {
+        const name = inputName.value.trim() || 'หมวดหมู่ใหม่';
+        const emoji = inputEmoji.value.trim() || '📁';
+        
+        // Add card to grid
+        const grid = document.getElementById('categoriesGrid');
+        if (grid) {
+          const newCard = document.createElement('div');
+          const isInc = currentType === 'income';
+          const badgeClass = isInc ? 'bg-secondary/10 text-secondary' : 'bg-tertiary-container/15 text-tertiary';
+          const dotClass = isInc ? 'bg-secondary' : 'bg-tertiary-container';
+          const typeText = isInc ? 'รายรับ' : 'รายจ่าย';
+
+          newCard.className = `category-card group relative flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all shadow-sm hover:shadow-md overflow-hidden animate-fadeIn`;
+          newCard.setAttribute('data-type', currentType);
+          newCard.innerHTML = `
+            <div class="absolute left-0 top-0 bottom-0 w-1 ${currentColor}"></div>
+            <div class="flex flex-col gap-space-md">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-space-sm">
+                  <span class="flex items-center justify-center w-10 h-10 rounded-xl bg-surface-container text-xl">${emoji}</span>
+                  <div class="flex flex-col min-w-0">
+                    <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">${name}</h3>
+                    <span class="font-micro-code text-micro-code text-outline uppercase tracking-wider">Custom Metric</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+                  <button type="button" class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors" title="แก้ไข">
+                    <span class="material-symbols-outlined text-[16px]">edit</span>
+                  </button>
+                  <button type="button" class="p-1 rounded text-outline hover:text-tertiary hover:bg-tertiary-container/10 transition-colors" title="ลบ">
+                    <span class="material-symbols-outlined text-[16px]">delete</span>
+                  </button>
+                </div>
+              </div>
+              <div class="flex items-center justify-between pt-space-xs">
+                <span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full ${badgeClass} font-label-sm text-label-sm font-semibold">
+                  <span class="w-1.5 h-1.5 rounded-full ${dotClass}"></span>
+                  ${typeText}
+                </span>
+                <span class="font-mono-metric text-label-sm text-on-surface-variant">0 รายการ</span>
+              </div>
+            </div>
+            <div class="mt-space-lg pt-space-sm flex items-end justify-between bg-surface-container-lowest/40 -mx-space-lg -mb-space-lg p-space-md">
+              <span class="font-micro-code text-micro-code uppercase text-outline">ยอดรวมสะสม</span>
+              <span class="font-mono-metric text-headline-sm text-on-surface font-semibold">฿0</span>
+            </div>
+          `;
+          grid.prepend(newCard);
+        }
+
+        toggleModal(false);
+      });
+    }
+
+    // Filter Functionality
+    const filterPills = document.querySelectorAll('.filter-pill');
+    const categoryCards = document.querySelectorAll('.category-card');
+
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        const filter = pill.getAttribute('data-filter');
+        
+        filterPills.forEach(p => {
+          p.className = 'filter-pill flex items-center gap-space-xs px-space-md py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all';
+        });
+
+        pill.className = 'filter-pill flex items-center gap-space-xs px-space-md py-1.5 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-semibold transition-all';
+
+        const cards = document.querySelectorAll('.category-card');
+        cards.forEach(card => {
+          const type = card.getAttribute('data-type');
+          if (filter === 'all' || type === filter) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  })();
+</script></main></div></body></html>

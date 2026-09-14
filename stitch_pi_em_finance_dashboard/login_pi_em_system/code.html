@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>เข้าสู่ระบบ - PI&amp;EM System</title>
+<!-- Google Fonts: Inter & Sarabun for Thai typography -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Sarabun:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with Forms & Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Sarabun', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              500: '#6366F1',
+              600: '#5254db',
+            },
+            slate: {
+              850: '#131C2E',
+              925: '#0A101D',
+              950: '#080C14',
+            }
+          }
+        }
+      }
+    }
+  </script>
+<!-- Custom styles for background radial gradient and smooth focus rings -->
+<style data-purpose="custom-background">
+    body {
+      background-color: #080C14;
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.12) 0%, rgba(15, 23, 42, 0) 50%),
+        linear-gradient(180deg, #080C14 0%, #0F172A 100%);
+      background-attachment: fixed;
+    }
+  </style>
+<style data-purpose="form-styles">
+    /* Subtle glow on inputs when focused */
+    .glow-input:focus {
+      border-color: #6366F1;
+      box-shadow: 0 0 0 1px #6366F1, 0 0 12px rgba(99, 102, 241, 0.25);
+    }
+  </style>
+</head>
+<body class="min-h-full flex items-center justify-center p-4 sm:p-6 text-slate-100 font-sans antialiased selection:bg-indigo-500 selection:text-white">
+<!-- BEGIN: MainContent -->
+<main class="w-full flex items-center justify-center">
+<!-- BEGIN: LoginCard -->
+<div class="w-full max-w-[420px] bg-[#131C2E] border border-white/10 rounded-2xl p-9 shadow-[0_8px_32px_rgba(0,0,0,0.6)] backdrop-blur-sm relative overflow-hidden" data-purpose="login-card">
+<!-- Card Inner Subtle Glow Accent at top edge -->
+<div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent"></div>
+<!-- BEGIN: CardHeader -->
+<div class="flex flex-col items-center text-center" data-purpose="card-header">
+<!-- App Logo -->
+<div class="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-xl transition-transform duration-300 hover:scale-105">
+<svg aria-label="PI&amp;EM Brand Logo" class="w-12 h-12" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#131C2E" height="48" rx="12" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" width="48"></rect>
+<rect fill="url(#brandGrad)" fill-opacity="0.12" height="44" rx="10" width="44" x="2" y="2"></rect>
+<path d="M14 16H24C27.3137 16 30 18.6863 30 22C30 25.3137 27.3137 28 24 28H14V16Z" stroke="#6366F1" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+<path d="M14 28V34" stroke="#6366F1" stroke-linecap="round" stroke-width="3"></path>
+<path d="M26 32L34 22M34 22H28M34 22V28" stroke="#10B981" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+<defs>
+<lineargradient gradientunits="userSpaceOnUse" id="brandGrad" x1="0" x2="48" y1="0" y2="48">
+<stop stop-color="#6366F1"></stop>
+<stop offset="1" stop-color="#10B981"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+<!-- System Title & Subtitle -->
+<h1 class="text-2xl font-bold tracking-[-0.5px] text-[#F1F5F9] leading-tight">
+          PI&amp;EM System
+        </h1>
+<p class="text-sm text-[#64748B] mt-1 font-normal">
+          จัดการการเงินส่วนตัว
+        </p>
+</div>
+<!-- END: CardHeader -->
+<!-- Subtle Divider Line -->
+<div class="h-px w-full bg-white/[0.06] my-6"></div>
+<!-- BEGIN: LoginForm -->
+<form action="#" class="space-y-5" data-purpose="login-form" method="POST">
+<!-- Email Field -->
+<div data-purpose="form-group-email">
+<label class="block text-sm font-medium text-slate-300 mb-1.5" for="email">
+            Email
+          </label>
+<div class="relative">
+<input class="glow-input w-full bg-[#0F172A] border border-white/[0.08] rounded-lg p-3 text-[#F1F5F9] placeholder-slate-500 text-sm focus:outline-none transition duration-200" id="email" name="email" placeholder="name@example.com" required="" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div data-purpose="form-group-password">
+<div class="flex items-center justify-between mb-1.5">
+<label class="block text-sm font-medium text-slate-300" for="password">
+              Password
+            </label>
+<!-- Forgot Password Link -->
+<a class="text-xs text-[#6366F1] hover:text-[#818cf8] font-medium transition-colors" href="#forgot">
+              ลืมรหัสผ่าน?
+            </a>
+</div>
+<!-- Password Input with Toggle Icon -->
+<div class="relative flex items-center">
+<input class="glow-input w-full bg-[#0F172A] border border-white/[0.08] rounded-lg p-3 pr-10 text-[#F1F5F9] placeholder-slate-500 text-sm focus:outline-none transition duration-200" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+<!-- Eye Toggle Button -->
+<button aria-label="สลับการมองเห็นรหัสผ่าน" class="absolute right-3 p-1 text-slate-400 hover:text-slate-200 focus:outline-none focus:text-indigo-400 transition-colors" id="toggle-password" type="button">
+<!-- Icon Eye Open -->
+<svg class="w-5 h-5" fill="none" id="eye-open-icon" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<!-- Icon Eye Closed (hidden by default) -->
+<svg class="w-5 h-5 hidden" fill="none" id="eye-closed-icon" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- Submit Button -->
+<div class="pt-2">
+<button class="w-full bg-[#6366F1] hover:bg-[#5254db] text-white font-semibold rounded-lg py-3 px-4 shadow-[0_4px_14px_rgba(99,102,241,0.39)] transition-all duration-200 transform active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#131C2E] focus:ring-[#6366F1]" type="submit">
+            เข้าสู่ระบบ
+          </button>
+</div>
+</form>
+<!-- END: LoginForm -->
+<!-- BEGIN: CardFooter -->
+<div class="mt-7 text-center" data-purpose="card-footer">
+<!-- Register Link -->
+<p class="text-sm text-slate-400">
+          ยังไม่มีบัญชี? 
+          <a class="text-[#6366F1] hover:text-[#818cf8] font-medium transition-colors ml-1 inline-flex items-center gap-0.5 group" href="#register">
+            สมัครสมาชิก
+            <span class="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
+</a>
+</p>
+<!-- Security Micro-Badge -->
+<div class="mt-6 pt-5 border-t border-white/[0.04] flex items-center justify-center gap-1.5 text-slate-500 text-xs tracking-wide select-none">
+<span class="text-xs">🔒</span>
+<span>256-bit Bank Grade Security</span>
+</div>
+</div>
+<!-- END: CardFooter -->
+</div>
+<!-- END: LoginCard -->
+</main>
+<!-- END: MainContent -->
+<!-- JavaScript for Password Visibility Toggle -->
+<script data-purpose="password-toggle">
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.getElementById('toggle-password');
+      const passwordInput = document.getElementById('password');
+      const eyeOpenIcon = document.getElementById('eye-open-icon');
+      const eyeClosedIcon = document.getElementById('eye-closed-icon');
+
+      if (toggleBtn && passwordInput) {
+        toggleBtn.addEventListener('click', () => {
+          const isPassword = passwordInput.getAttribute('type') === 'password';
+          passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+          
+          // Toggle Icons
+          if (isPassword) {
+            eyeOpenIcon.classList.add('hidden');
+            eyeClosedIcon.classList.remove('hidden');
+          } else {
+            eyeOpenIcon.classList.remove('hidden');
+            eyeClosedIcon.classList.add('hidden');
+          }
+        });
+      }
+    });
+  </script>
+</body></html>

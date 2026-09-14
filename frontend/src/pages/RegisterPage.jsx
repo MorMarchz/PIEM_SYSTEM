@@ -10,17 +10,17 @@ import {
   IconButton,
   InputAdornment,
   CircularProgress,
-  Avatar,
   Link,
   Container,
 } from '@mui/material';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import Visibility from '@mui/icons-material/VisibilityRounded';
+import VisibilityOff from '@mui/icons-material/VisibilityOffRounded';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutlineRounded';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWalletRounded';
 import { useAuth } from '../context/AuthContext';
+import { APP_VERSION } from '../config/version';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -47,7 +47,6 @@ const RegisterPage = () => {
     e.preventDefault();
     const { display_name, email, password, confirm_password } = formData;
 
-    // Client-side Validations
     if (!display_name.trim() || !email || !password || !confirm_password) {
       setErrorMessage('กรุณากรอกข้อมูลให้ครบถ้วนทุกช่อง');
       return;
@@ -77,7 +76,7 @@ const RegisterPage = () => {
     setSubmitting(false);
 
     if (result.success) {
-      setSuccessMessage('สมัครสมาชิกสำเร็จแล้ว! กำลังนำคุณไปยังหน้าเข้าสู่ระบบ...');
+      setSuccessMessage('✓ สมัครสมาชิกสำเร็จแล้ว! กำลังนำคุณไปยังหน้าเข้าสู่ระบบ...');
       setTimeout(() => {
         navigate('/login');
       }, 1500);
@@ -93,112 +92,136 @@ const RegisterPage = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        bgcolor: '#0F172A',
-        backgroundImage: 'radial-gradient(circle at 50% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 60%)',
+        bgcolor: '#080C14',
+        position: 'relative',
+        overflow: 'hidden',
         p: 2,
       }}
     >
-      <Container maxWidth="xs">
+      {/* Ambient background glow */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '20%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 500,
+          height: 350,
+          borderRadius: '50%',
+          bgcolor: 'rgba(16, 185, 129, 0.1)',
+          filter: 'blur(90px)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      <Container maxWidth="xs" sx={{ position: 'relative', zIndex: 1 }}>
         <Paper
-          elevation={12}
+          elevation={0}
           sx={{
             p: 4,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            background: 'rgba(30, 41, 59, 0.85)',
-            backdropFilter: 'blur(16px)',
-            borderRadius: 4,
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)',
+            bgcolor: '#131C2E',
+            borderRadius: '16px',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            boxShadow: '0 24px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 0 rgba(255, 255, 255, 0.06)',
           }}
         >
           {/* Logo & Header */}
-          <Avatar
+          <Box
             sx={{
-              m: 1,
-              bgcolor: 'secondary.main',
-              width: 52,
-              height: 52,
-              boxShadow: '0 6px 20px rgba(236, 72, 153, 0.5)',
+              width: 48,
+              height: 48,
+              borderRadius: '12px',
+              bgcolor: '#10B981',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 0 24px rgba(16, 185, 129, 0.4)',
+              mb: 2,
             }}
           >
-            <PersonAddOutlinedIcon fontSize="large" />
-          </Avatar>
-          <Typography variant="h5" sx={{ fontWeight: 700, color: '#F8FAFC', mt: 1 }}>
-            สมัครสมาชิกใหม่
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary', mb: 3, textAlign: 'center' }}>
+            <AccountBalanceWalletIcon sx={{ color: '#002113', fontSize: 26 }} />
+          </Box>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+            <Typography variant="h5" sx={{ fontWeight: 700, color: '#F1F5F9', letterSpacing: '-0.02em' }}>
+              สมัครสมาชิกใหม่
+            </Typography>
+          </Box>
+
+          <Typography variant="body2" sx={{ color: '#94A3B8', mb: 3, textAlign: 'center', fontSize: '0.85rem' }}>
             สร้างบัญชีใช้งานเพื่อเริ่มต้นบันทึกการเงินส่วนบุคคล
           </Typography>
 
           {/* Alert Messages */}
           {errorMessage && (
-            <Alert severity="error" sx={{ width: '100%', mb: 2, borderRadius: 2 }}>
+            <Alert severity="error" sx={{ width: '100%', mb: 2, bgcolor: 'rgba(244, 63, 94, 0.15)', color: '#FFB2B7', border: '1px solid rgba(244, 63, 94, 0.3)', borderRadius: '10px' }}>
               {errorMessage}
             </Alert>
           )}
+
           {successMessage && (
-            <Alert severity="success" sx={{ width: '100%', mb: 2, borderRadius: 2 }}>
+            <Alert severity="success" sx={{ width: '100%', mb: 2, bgcolor: 'rgba(16, 185, 129, 0.15)', color: '#4EDEA3', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: '10px' }}>
               {successMessage}
             </Alert>
           )}
 
           {/* Register Form */}
-          <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%' }}>
+          <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}>
             <TextField
-              margin="dense"
               required
               fullWidth
               id="display_name"
               label="ชื่อที่ต้องการแสดง (Display Name)"
               name="display_name"
               autoFocus
+              size="small"
               value={formData.display_name}
               onChange={handleChange}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <PersonOutlineIcon color="action" />
+                    <PersonOutlineIcon sx={{ color: '#64748B', fontSize: 18 }} />
                   </InputAdornment>
                 ),
               }}
-              sx={{ mb: 2 }}
             />
+
             <TextField
-              margin="dense"
               required
               fullWidth
               id="email"
               label="อีเมล (Email)"
               name="email"
-              type="email"
               autoComplete="email"
+              size="small"
               value={formData.email}
               onChange={handleChange}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <EmailOutlinedIcon color="action" />
+                    <EmailOutlinedIcon sx={{ color: '#64748B', fontSize: 18 }} />
                   </InputAdornment>
                 ),
               }}
-              sx={{ mb: 2 }}
             />
+
             <TextField
-              margin="dense"
               required
               fullWidth
               name="password"
               label="รหัสผ่าน (อย่างน้อย 8 ตัวอักษร)"
               type={showPassword ? 'text' : 'password'}
               id="password"
+              size="small"
               value={formData.password}
               onChange={handleChange}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <LockOutlinedIcon color="action" />
+                    <LockOutlinedIcon sx={{ color: '#64748B', fontSize: 18 }} />
                   </InputAdornment>
                 ),
                 endAdornment: (
@@ -207,70 +230,65 @@ const RegisterPage = () => {
                       aria-label="toggle password visibility"
                       onClick={() => setShowPassword(!showPassword)}
                       edge="end"
+                      size="small"
+                      sx={{ color: '#64748B' }}
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
                     </IconButton>
                   </InputAdornment>
                 ),
               }}
-              sx={{ mb: 2 }}
             />
+
             <TextField
-              margin="dense"
               required
               fullWidth
               name="confirm_password"
-              label="ยืนยันรหัสผ่าน (Confirm Password)"
-              type={showPassword ? 'text' : 'password'}
+              label="ยืนยันรหัสผ่าน"
+              type="password"
               id="confirm_password"
+              size="small"
               value={formData.confirm_password}
               onChange={handleChange}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <LockOutlinedIcon color="action" />
+                    <LockOutlinedIcon sx={{ color: '#64748B', fontSize: 18 }} />
                   </InputAdornment>
                 ),
               }}
-              sx={{ mb: 3 }}
             />
 
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              size="large"
+              color="primary"
               disabled={submitting}
               sx={{
-                py: 1.5,
-                fontSize: '1rem',
+                mt: 1,
+                py: 1,
+                fontSize: '0.875rem',
                 fontWeight: 600,
-                borderRadius: 2.5,
-                background: 'linear-gradient(135deg, #EC4899 0%, #DB2777 100%)',
-                boxShadow: '0 4px 14px rgba(236, 72, 153, 0.4)',
-                '&:hover': {
-                  background: 'linear-gradient(135deg, #DB2777 0%, #BE185D 100%)',
-                },
               }}
             >
-              {submitting ? <CircularProgress size={26} color="inherit" /> : 'ลงทะเบียนสมัครสมาชิก'}
+              {submitting ? <CircularProgress size={22} color="inherit" /> : 'สร้างบัญชีผู้ใช้'}
             </Button>
 
-            <Box sx={{ mt: 3, textAlign: 'center' }}>
-              <Typography variant="body2" color="text.secondary">
-                มีบัญชีใช้งานอยู่แล้วใช่หรือไม่?{' '}
-                <Link
-                  component={RouterLink}
-                  to="/login"
-                  underline="hover"
-                  sx={{ color: 'secondary.light', fontWeight: 600 }}
-                >
-                  เข้าสู่ระบบที่นี่
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2 }}>
+              <Typography variant="body2" sx={{ color: '#94A3B8', fontSize: '0.825rem' }}>
+                มีบัญชีใช้งานอยู่แล้ว?{' '}
+                <Link component={RouterLink} to="/login" sx={{ color: '#818CF8', fontWeight: 600, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>
+                  เข้าสู่ระบบ
                 </Link>
               </Typography>
             </Box>
           </Box>
         </Paper>
+
+        <Typography variant="caption" sx={{ display: 'block', textAlign: 'center', color: '#475569', mt: 3, fontSize: '0.72rem' }}>
+          PI&EM Personal Finance System • {APP_VERSION}
+        </Typography>
       </Container>
     </Box>
   );

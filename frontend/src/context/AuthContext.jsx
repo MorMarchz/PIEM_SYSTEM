@@ -21,7 +21,14 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await api.get('/auth/me');
       if (response.data?.success) {
-        setUser(response.data.data.user);
+        // /auth/me ส่ง data โดยตรง ไม่ใช่ data.user
+        const d = response.data.data;
+        setUser({
+          id: d.user_id,
+          email: d.email,
+          display_name: d.display_name,
+          created_at: d.created_at,
+        });
       }
     } catch (err) {
       console.warn('[AuthContext]: Failed to fetch user profile:', err.message);
@@ -41,8 +48,10 @@ export const AuthProvider = ({ children }) => {
         const refreshResponse = await api.post('/auth/refresh');
         if (refreshResponse.data?.success) {
           const newToken = refreshResponse.data.data.access_token;
-          const userData = refreshResponse.data.data.user;
-          updateSession(userData, newToken);
+          setAccessTokenInMemory(newToken);
+          setAccessToken(newToken);
+          // /auth/refresh ไม่ส่ง user กลับมา ต้อง fetchCurrentUser ต่อ
+          await fetchCurrentUser();
         }
       }
     } catch (err) {
