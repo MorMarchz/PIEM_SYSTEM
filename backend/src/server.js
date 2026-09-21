@@ -10,6 +10,8 @@ import categoryRoutes from './routes/category.routes.js';
 import transactionRoutes from './routes/transaction.routes.js';
 import dashboardRoutes from './routes/dashboard.routes.js';
 import reportRoutes from './routes/report.routes.js';
+import recurringRoutes from './routes/recurring.routes.js';
+import { processAllDueRecurringTransactions } from './services/recurring.service.js';
 
 dotenv.config();
 
@@ -64,8 +66,15 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/categories', categoryRoutes);
 app.use('/api/v1/transactions', transactionRoutes);
+app.use('/api/v1/recurring', recurringRoutes);
 app.use('/api/v1/dashboard', dashboardRoutes);
 app.use('/api/v1/reports', reportRoutes);
+
+// Daily Recurring Transactions Scheduler (runs every hour to catch newly due items)
+setInterval(() => {
+  processAllDueRecurringTransactions();
+}, 60 * 60 * 1000);
+
 
 import path from 'path';
 import fs from 'fs';

@@ -1,5 +1,6 @@
 import pool from '../config/db.js';
 import { logAuditEvent } from '../services/audit.service.js';
+import { processUserRecurringTransactions } from '../services/recurring.service.js';
 
 /**
  * Helper to fetch category by ID and check existence
@@ -175,6 +176,10 @@ export const createTransaction = async (req, res, next) => {
 export const getTransactions = async (req, res, next) => {
   try {
     const userId = req.user.id; // Row-Level Data Isolation
+
+    // Check and auto-generate any due recurring transactions before querying
+    await processUserRecurringTransactions(userId, req);
+
     const {
       type,
       category_id,

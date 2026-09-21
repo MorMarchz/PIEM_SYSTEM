@@ -83,6 +83,30 @@ CREATE TABLE IF NOT EXISTS `audit_logs` (
   INDEX `idx_audit_actor_created` (`actor_user_id`, `created_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------------------
+-- Table 5: recurring_transactions (Monthly Automated Transactions)
+-- --------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `recurring_transactions` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT NOT NULL,
+  `category_id` INT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `amount` DECIMAL(12, 2) NOT NULL,
+  `type` ENUM('income', 'expense') NOT NULL,
+  `day_of_month` INT NOT NULL,
+  `note` TEXT NULL,
+  `is_active` BOOLEAN NOT NULL DEFAULT TRUE,
+  `last_generated_date` DATE NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `chk_recurring_amount` CHECK (`amount` > 0),
+  CONSTRAINT `chk_day_of_month` CHECK (`day_of_month` BETWEEN 1 AND 31),
+  CONSTRAINT `fk_recurring_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_recurring_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL,
+  INDEX `idx_recurring_user_active` (`user_id`, `is_active`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- ====================================================================
 -- SEED DATA: Standard Categories (Master Data)
 -- ====================================================================

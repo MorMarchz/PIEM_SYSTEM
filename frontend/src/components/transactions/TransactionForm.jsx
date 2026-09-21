@@ -19,13 +19,17 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import api from '../../services/api';
+import {
+  formatAmountWithCommas,
+  parseAmountToNumber,
+} from '../../utils/numberFormat';
 
 const TransactionForm = ({ mode = 'create', initialData = null, transactionId = null }) => {
   const navigate = useNavigate();
 
   const [type, setType] = useState(initialData?.type || 'expense');
   const [title, setTitle] = useState(initialData?.title || '');
-  const [amount, setAmount] = useState(initialData?.amount ? String(initialData.amount) : '');
+  const [amount, setAmount] = useState(initialData?.amount ? formatAmountWithCommas(initialData.amount) : '');
   const [categoryId, setCategoryId] = useState(initialData?.category?.id || '');
   const [date, setDate] = useState(
     initialData?.date
@@ -74,7 +78,7 @@ const TransactionForm = ({ mode = 'create', initialData = null, transactionId = 
       return;
     }
 
-    const numAmount = parseFloat(amount);
+    const numAmount = parseAmountToNumber(amount);
     if (isNaN(numAmount) || numAmount <= 0) {
       setError('จำนวนเงินต้องเป็นตัวเลขที่มากกว่า 0');
       return;
@@ -200,10 +204,17 @@ const TransactionForm = ({ mode = 'create', initialData = null, transactionId = 
               required
               fullWidth
               label="จำนวนเงิน (บาท)"
-              type="number"
-              inputProps={{ step: 'any', min: '0.01' }}
+              placeholder="0.00"
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={(e) => {
+                const formatted = formatAmountWithCommas(e.target.value);
+                setAmount(formatted);
+              }}
+              onKeyDown={(e) => {
+                if (['e', 'E', '+', '-'].includes(e.key)) {
+                  e.preventDefault();
+                }
+              }}
               InputProps={{
                 endAdornment: <InputAdornment position="end">฿</InputAdornment>,
               }}
