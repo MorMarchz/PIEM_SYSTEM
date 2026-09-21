@@ -5,6 +5,9 @@
 -- Path: db/init/01-init.sql
 -- ====================================================================
 
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
+
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `audit_logs`;
 DROP TABLE IF EXISTS `transactions`;
@@ -33,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
   `type` ENUM('income', 'expense') NOT NULL,
-  `icon` VARCHAR(50) NULL,
+  `icon` TEXT NULL,
   `color` VARCHAR(20) NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
@@ -85,20 +88,20 @@ CREATE TABLE IF NOT EXISTS `audit_logs` (
 -- ====================================================================
 
 -- 1. Income Categories
-INSERT INTO `categories` (`name`, `type`, `icon`, `color`) VALUES
-('เงินเดือน', 'income', 'Work', '#10B981'),
-('รายได้พิเศษ / ฟรีแลนซ์', 'income', 'Laptop', '#3B82F6'),
-('การลงทุน / ปันผล', 'income', 'TrendingUp', '#8B5CF6'),
-('ขายของ / ค้าขาย', 'income', 'Storefront', '#F59E0B'),
-('รายรับอื่นๆ', 'income', 'AttachMoney', '#6B7280');
+INSERT INTO `categories` (`id`, `name`, `type`, `icon`, `color`) VALUES
+(1, 'เงินเดือน', 'income', '💼', '#10B981'),
+(2, 'รายได้พิเศษ / ฟรีแลนซ์', 'income', '💻', '#3B82F6'),
+(3, 'การลงทุน / ปันผล', 'income', '📈', '#8B5CF6'),
+(4, 'ขายของ / ค้าขาย', 'income', '🏪', '#F59E0B'),
+(5, 'รายรับอื่นๆ', 'income', '💰', '#6B7280');
 
 -- 2. Expense Categories
-INSERT INTO `categories` (`name`, `type`, `icon`, `color`) VALUES
-('อาหารและเครื่องดื่ม', 'expense', 'Restaurant', '#EF4444'),
-('ค่าเดินทาง / น้ำมัน', 'expense', 'DirectionsCar', '#F97316'),
-('ช้อปปิ้ง / ของใช้', 'expense', 'ShoppingBag', '#EC4899'),
-('ค่าที่พัก / ค่าน้ำ-ค่าไฟ', 'expense', 'Home', '#6366F1'),
-('ความบันเทิง / พักผ่อน', 'expense', 'SportsEsports', '#84CC16'),
-('การศึกษา / พัฒนาตนเอง', 'expense', 'School', '#14B8A6'),
-('สุขภาพ / พยาบาล', 'expense', 'LocalHospital', '#06B6D4'),
-('รายจ่ายอื่นๆ', 'expense', 'MoreHoriz', '#9CA3AF');
+INSERT INTO `categories` (`id`, `name`, `type`, `icon`, `color`) VALUES
+(6, 'อาหารและเครื่องดื่ม', 'expense', '🍔', '#EF4444'),
+(7, 'ค่าเดินทาง / น้ำมัน', 'expense', '🚗', '#F97316'),
+(8, 'ช้อปปิ้ง / ของใช้', 'expense', '🛍️', '#EC4899'),
+(9, 'ค่าที่พัก / ค่าน้ำ-ค่าไฟ', 'expense', '🏠', '#6366F1'),
+(10, 'ความบันเทิง / พักผ่อน', 'expense', '🎮', '#84CC16'),
+(11, 'การศึกษา / พัฒนาตนเอง', 'expense', '📚', '#14B8A6'),
+(12, 'สุขภาพ / พยาบาล', 'expense', '🏥', '#06B6D4'),
+(13, 'รายจ่ายอื่นๆ', 'expense', '✨', '#9CA3AF');

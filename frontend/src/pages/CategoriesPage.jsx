@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Box,
   Paper,
@@ -14,6 +14,8 @@ import {
   TextField,
   Alert,
   CircularProgress,
+  ToggleButton,
+  ToggleButtonGroup,
 } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircleRounded';
 import EditIcon from '@mui/icons-material/EditRounded';
@@ -21,12 +23,16 @@ import DeleteIcon from '@mui/icons-material/DeleteRounded';
 import TrendingUpIcon from '@mui/icons-material/TrendingUpRounded';
 import TrendingDownIcon from '@mui/icons-material/TrendingDownRounded';
 import CloseIcon from '@mui/icons-material/CloseRounded';
+import CloudUploadIcon from '@mui/icons-material/CloudUploadRounded';
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotionsRounded';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlineRounded';
 import api from '../services/api';
-import { APP_VERSION } from '../config/version';
+import CategoryIcon from '../components/common/CategoryIcon';
 
 const EMOJI_OPTIONS = [
   '💼', '🍔', '🎨', '💻', '🚆', '🏠', '🛒', '🎮', '🏥', '🎓',
   '💰', '📈', '☕', '✈️', '🎁', '⚡', '🎬', '📚', '🏋️', '✨',
+  '🚗', '🛵', '🍿', '💡', '🐾', '📱', '👕', '🏖️', '🛠️', '🪙',
 ];
 
 const EMPTY_FORM = { name: '', type: 'expense', icon: '🍔', color: '#6366F1' };
@@ -42,8 +48,12 @@ const CategoriesPage = () => {
   const [editTarget, setEditTarget] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [formData, setFormData] = useState(EMPTY_FORM);
+  const [iconMode, setIconMode] = useState('emoji'); // 'emoji' | 'upload'
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState('');
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  const fileInputRef = useRef(null);
 
   const fetchCategories = useCallback(async () => {
     setLoading(true);
@@ -71,23 +81,96 @@ const CategoriesPage = () => {
   const incomeCount = categories.filter((c) => c.type === 'income').length;
   const expenseCount = categories.filter((c) => c.type === 'expense').length;
 
+  const isImageIcon = (iconStr) => {
+    if (!iconStr) return false;
+    return (
+      iconStr.startsWith('data:image/') ||
+      iconStr.startsWith('http://') ||
+      iconStr.startsWith('https://') ||
+      /\.(png|jpe?g|svg|webp|gif)$/i.test(iconStr)
+    );
+  };
+
   const handleOpenCreate = () => {
     setEditTarget(null);
     setFormData(EMPTY_FORM);
+    setIconMode('emoji');
     setFormError('');
     setFormOpen(true);
   };
 
   const handleOpenEdit = (cat) => {
     setEditTarget(cat);
+    const initialIcon = cat.icon || '🍔';
     setFormData({
       name: cat.name || '',
       type: cat.type || 'expense',
-      icon: cat.icon || '🍔',
+      icon: initialIcon,
       color: cat.color || '#6366F1',
     });
+    setIconMode(isImageIcon(initialIcon) ? 'upload' : 'emoji');
     setFormError('');
     setFormOpen(true);
+  };
+
+  // Helper to resize uploaded image to 128x128 WebP/PNG Data URI
+  const handleImageFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setFormError('กรุณาเลือกไฟล์รูปภาพ (PNG, JPG, SVG, WebP)');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setFormError('ขนาดไฟล์รูปภาพต้องไม่เกิน 5 MB');
+      return;
+    }
+
+    setUploadingImage(true);
+    setFormError('');
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const canvas = document.createElement('canvas');
+          const maxDim = 128;
+          canvas.width = maxDim;
+          canvas.height = maxDim;
+          const ctx = canvas.getContext('2d');
+
+          // Center crop to square
+          const minSide = Math.min(img.width, img.height);
+          const startX = (img.width - minSide) / 2;
+          const startY = (img.height - minSide) / 2;
+
+          ctx.clearRect(0, 0, maxDim, maxDim);
+          ctx.drawImage(img, startX, startY, minSide, minSide, 0, 0, maxDim, maxDim);
+
+          // Export as WebP (fallback to PNG if unsupported)
+          let dataUrl = canvas.toDataURL('image/webp', 0.88);
+          if (!dataUrl.startsWith('data:image/webp')) {
+            dataUrl = canvas.toDataURL('image/png');
+          }
+
+          setFormData((prev) => ({ ...prev, icon: dataUrl }));
+        } catch (err) {
+          console.error('[CategoriesPage]: Image process error:', err);
+          setFormError('ไม่สามารถประมวลผลรูปภาพได้');
+        } finally {
+          setUploadingImage(false);
+        }
+      };
+      img.onerror = () => {
+        setFormError('ไม่สามารถเปิดไฟล์รูปภาพนี้ได้');
+        setUploadingImage(false);
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleFormSubmit = async (e) => {
@@ -150,7 +233,7 @@ const CategoriesPage = () => {
             หมวดหมู่การเงิน
           </Typography>
           <Typography variant="body2" sx={{ color: '#94A3B8', fontSize: { xs: '0.78rem', sm: '0.85rem' } }}>
-            จัดการหมวดหมู่รายรับและรายจ่ายเพื่อวิเคราะห์พฤติกรรมการเงินได้แม่นยำ
+            จัดการหมวดหมู่รายรับและรายจ่าย พร้อมไอคอนกำหนดเองเพื่อวิเคราะห์พฤติกรรมการเงินได้แม่นยำ
           </Typography>
         </Box>
 
@@ -268,7 +351,7 @@ const CategoriesPage = () => {
         </Box>
       </Box>
 
-      {/* 4-Column Bento Categories Grid */}
+      {/* Categories Grid */}
       {loading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
           <CircularProgress size={32} color="primary" />
@@ -325,26 +408,39 @@ const CategoriesPage = () => {
                   {/* Header: Icon, Title & Quick Actions */}
                   <Box>
                     <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 1.5 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, minWidth: 0, flex: 1, mr: 1 }}>
                         <Box
                           sx={{
-                            width: 38,
-                            height: 38,
+                            width: 40,
+                            height: 40,
+                            minWidth: 40,
                             borderRadius: '10px',
                             bgcolor: iconBg,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            fontSize: '1.2rem',
+                            overflow: 'hidden',
+                            flexShrink: 0,
                           }}
                         >
-                          {cat.icon || '📁'}
+                          <CategoryIcon icon={cat.icon} name={cat.name} size="1.4rem" />
                         </Box>
-                        <Box>
-                          <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#F1F5F9', fontSize: '0.9rem', lineHeight: 1.2 }}>
+                        <Box sx={{ minWidth: 0, flex: 1 }}>
+                          <Typography
+                            variant="subtitle1"
+                            sx={{
+                              fontWeight: 700,
+                              color: '#F1F5F9',
+                              fontSize: '0.9rem',
+                              lineHeight: 1.2,
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
                             {cat.name}
                           </Typography>
-                          <Typography variant="caption" sx={{ color: '#64748B', fontSize: '0.675rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                          <Typography variant="caption" sx={{ color: '#64748B', fontSize: '0.675rem', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block' }}>
                             {isIncome ? 'Income Source' : 'Expense Category'}
                           </Typography>
                         </Box>
@@ -481,35 +577,157 @@ const CategoriesPage = () => {
               required
             />
 
-            {/* Emoji Selection */}
+            {/* Icon Selection Mode (Emoji or Custom Upload) */}
             <Box>
-              <Typography variant="caption" sx={{ color: '#94A3B8', fontWeight: 600, mb: 1, display: 'block' }}>
-                เลือกไอคอน Emoji
-              </Typography>
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
-                {EMOJI_OPTIONS.map((emoji) => (
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+                <Typography variant="caption" sx={{ color: '#94A3B8', fontWeight: 600 }}>
+                  ไอคอนหมวดหมู่
+                </Typography>
+                <ToggleButtonGroup
+                  value={iconMode}
+                  exclusive
+                  onChange={(e, newMode) => {
+                    if (newMode) setIconMode(newMode);
+                  }}
+                  size="small"
+                  sx={{
+                    bgcolor: '#0A0E16',
+                    borderRadius: '8px',
+                    '& .MuiToggleButton-root': {
+                      py: 0.25,
+                      px: 1,
+                      fontSize: '0.7rem',
+                      textTransform: 'none',
+                      color: '#94A3B8',
+                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                      '&.Mui-selected': {
+                        bgcolor: 'rgba(99, 102, 241, 0.2)',
+                        color: '#C0C1FF',
+                        borderColor: 'rgba(99, 102, 241, 0.5)',
+                      },
+                    },
+                  }}
+                >
+                  <ToggleButton value="emoji">
+                    <EmojiEmotionsIcon sx={{ fontSize: 14, mr: 0.5 }} />
+                    Emoji
+                  </ToggleButton>
+                  <ToggleButton value="upload">
+                    <CloudUploadIcon sx={{ fontSize: 14, mr: 0.5 }} />
+                    อัปโหลดรูป
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </Box>
+
+              {/* Preview Current Selected Icon */}
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: 1.25, mb: 1.5, bgcolor: '#0A0E16', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
+                <Box
+                  sx={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: '10px',
+                    bgcolor: 'rgba(99, 102, 241, 0.15)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    overflow: 'hidden',
+                    border: '1px solid rgba(99, 102, 241, 0.3)',
+                  }}
+                >
+                  <CategoryIcon icon={formData.icon} name={formData.name} size="1.6rem" />
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="caption" sx={{ color: '#F1F5F9', fontWeight: 600, display: 'block' }}>
+                    พรีวิวไอคอนปัจจุบัน
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: '#64748B', fontSize: '0.7rem' }}>
+                    {isImageIcon(formData.icon) ? 'รูปภาพกำหนดเอง (Custom Image)' : 'อิโมจิมาตรฐาน'}
+                  </Typography>
+                </Box>
+                {isImageIcon(formData.icon) && (
+                  <Button
+                    size="small"
+                    variant="text"
+                    color="error"
+                    onClick={() => setFormData({ ...formData, icon: '🍔' })}
+                    startIcon={<DeleteOutlineIcon sx={{ fontSize: 14 }} />}
+                    sx={{ fontSize: '0.7rem', py: 0.2 }}
+                  >
+                    ล้างรูป
+                  </Button>
+                )}
+              </Box>
+
+              {/* Mode A: Emoji Selection Grid */}
+              {iconMode === 'emoji' && (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, maxHeight: 130, overflowY: 'auto', p: 0.5, bgcolor: 'rgba(255, 255, 255, 0.02)', borderRadius: '8px' }}>
+                  {EMOJI_OPTIONS.map((emoji) => (
+                    <Box
+                      key={emoji}
+                      onClick={() => setFormData({ ...formData, icon: emoji })}
+                      sx={{
+                        width: 34,
+                        height: 34,
+                        borderRadius: '8px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '1.1rem',
+                        cursor: 'pointer',
+                        bgcolor: formData.icon === emoji ? 'rgba(99, 102, 241, 0.25)' : 'rgba(255, 255, 255, 0.04)',
+                        border: formData.icon === emoji ? '2px solid #6366F1' : '1px solid rgba(255, 255, 255, 0.08)',
+                        transition: 'all 0.15s ease',
+                        '&:hover': { bgcolor: 'rgba(99, 102, 241, 0.15)' },
+                      }}
+                    >
+                      {emoji}
+                    </Box>
+                  ))}
+                </Box>
+              )}
+
+              {/* Mode B: Custom Image Upload Box */}
+              {iconMode === 'upload' && (
+                <Box>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    accept="image/png, image/jpeg, image/webp, image/svg+xml, image/gif"
+                    style={{ display: 'none' }}
+                    onChange={handleImageFileChange}
+                  />
                   <Box
-                    key={emoji}
-                    onClick={() => setFormData({ ...formData, icon: emoji })}
+                    onClick={() => fileInputRef.current?.click()}
                     sx={{
-                      width: 34,
-                      height: 34,
-                      borderRadius: '8px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '1.1rem',
+                      p: 2.5,
+                      borderRadius: '10px',
+                      border: '2px dashed rgba(99, 102, 241, 0.4)',
+                      bgcolor: 'rgba(99, 102, 241, 0.04)',
+                      textAlign: 'center',
                       cursor: 'pointer',
-                      bgcolor: formData.icon === emoji ? 'rgba(99, 102, 241, 0.25)' : 'rgba(255, 255, 255, 0.04)',
-                      border: formData.icon === emoji ? '2px solid #6366F1' : '1px solid rgba(255, 255, 255, 0.08)',
-                      transition: 'all 0.15s ease',
-                      '&:hover': { bgcolor: 'rgba(99, 102, 241, 0.15)' },
+                      transition: 'all 0.2s ease',
+                      '&:hover': {
+                        borderColor: '#6366F1',
+                        bgcolor: 'rgba(99, 102, 241, 0.08)',
+                      },
                     }}
                   >
-                    {emoji}
+                    {uploadingImage ? (
+                      <CircularProgress size={24} sx={{ color: '#6366F1', my: 1 }} />
+                    ) : (
+                      <>
+                        <CloudUploadIcon sx={{ fontSize: 32, color: '#818CF8', mb: 0.5 }} />
+                        <Typography variant="body2" sx={{ color: '#F1F5F9', fontWeight: 600, fontSize: '0.825rem' }}>
+                          คลิกเพื่อเลือกไฟล์รูปภาพ
+                        </Typography>
+                        <Typography variant="caption" sx={{ color: '#64748B', display: 'block', mt: 0.25 }}>
+                          รองรับ PNG, JPG, SVG, WebP (ครอบตัดจัตุรัสอัตโนมัติ)
+                        </Typography>
+                      </>
+                    )}
                   </Box>
-                ))}
-              </Box>
+                </Box>
+              )}
             </Box>
           </Box>
         </DialogContent>
@@ -522,7 +740,7 @@ const CategoriesPage = () => {
             type="submit"
             form="cat-modal-form"
             variant="contained"
-            disabled={submitting}
+            disabled={submitting || uploadingImage}
             sx={{
               bgcolor: '#6366F1',
               color: '#fff',
@@ -553,7 +771,7 @@ const CategoriesPage = () => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ color: '#94A3B8', fontSize: '0.85rem' }}>
-            คุณต้องการลบหมวดหมู่ <strong style={{ color: '#F1F5F9' }}>"{deleteTarget?.icon} {deleteTarget?.name}"</strong> ใช่หรือไม่?
+            คุณต้องการลบหมวดหมู่ <strong style={{ color: '#F1F5F9' }}>"{deleteTarget?.name}"</strong> ใช่หรือไม่?
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2 }}>

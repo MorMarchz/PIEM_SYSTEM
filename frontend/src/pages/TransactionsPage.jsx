@@ -37,6 +37,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownwardRounded';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpwardRounded';
 import InsightsIcon from '@mui/icons-material/InsightsRounded';
 import api from '../services/api';
+import CategoryIcon from '../components/common/CategoryIcon';
 
 const TransactionsPage = () => {
   const navigate = useNavigate();
@@ -457,7 +458,10 @@ const TransactionsPage = () => {
               <MenuItem value="all">หมวดหมู่: ทั้งหมด</MenuItem>
               {categories.map((cat) => (
                 <MenuItem key={cat.id} value={String(cat.id)}>
-                  {cat.icon ? `${cat.icon} ` : ''}{cat.name}
+                  <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
+                    <CategoryIcon icon={cat.icon} name={cat.name} size="1.1rem" />
+                    <span>{cat.name}</span>
+                  </Box>
                 </MenuItem>
               ))}
             </TextField>
@@ -603,9 +607,18 @@ const TransactionsPage = () => {
                         </Box>
                       </TableCell>
                       <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                        <Typography variant="body2" sx={{ color: '#94A3B8', fontSize: '0.8rem' }}>
-                          {tx.category ? `${tx.category.icon ? tx.category.icon + ' ' : ''}${tx.category.name}` : '-'}
-                        </Typography>
+                        {tx.category ? (
+                          <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.75 }}>
+                            <CategoryIcon icon={tx.category.icon} name={tx.category.name} size="1.1rem" />
+                            <Typography variant="body2" sx={{ color: '#94A3B8', fontSize: '0.8rem' }}>
+                              {tx.category.name}
+                            </Typography>
+                          </Box>
+                        ) : (
+                          <Typography variant="body2" sx={{ color: '#64748B', fontSize: '0.8rem' }}>
+                            -
+                          </Typography>
+                        )}
                       </TableCell>
                       <TableCell align="right" sx={{ whiteSpace: 'nowrap' }}>
                         <Typography
@@ -780,7 +793,10 @@ const TransactionsPage = () => {
                 .filter((c) => !c.type || c.type === formType)
                 .map((c) => (
                   <MenuItem key={c.id} value={String(c.id)}>
-                    {c.icon ? `${c.icon} ` : ''}{c.name}
+                    <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
+                      <CategoryIcon icon={c.icon} name={c.name} size="1.1rem" />
+                      <span>{c.name}</span>
+                    </Box>
                   </MenuItem>
                 ))}
             </TextField>

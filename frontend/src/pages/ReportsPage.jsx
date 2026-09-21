@@ -26,6 +26,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import api from '../services/api';
+import CategoryIcon from '../components/common/CategoryIcon';
 
 const ReportsPage = () => {
   const currentMonthStr = new Date().toISOString().slice(0, 7); // 'YYYY-MM'
@@ -423,9 +424,12 @@ const ReportsPage = () => {
                   return (
                     <Box key={index} sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Typography variant="body2" sx={{ fontWeight: 600, color: '#F1F5F9', fontSize: '0.825rem' }}>
-                          {item.icon ? `${item.icon} ` : ''}{item.category_name}
-                        </Typography>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+                          <CategoryIcon icon={item.icon} name={item.category_name} size="1.1rem" />
+                          <Typography variant="body2" sx={{ fontWeight: 600, color: '#F1F5F9', fontSize: '0.825rem' }}>
+                            {item.category_name}
+                          </Typography>
+                        </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           <Typography variant="caption" className="tabular-nums" sx={{ color: '#64748B', fontSize: '0.72rem' }}>
                             {percentage}%
