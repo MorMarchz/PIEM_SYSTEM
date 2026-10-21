@@ -14,6 +14,7 @@ router.use(authenticateToken);
 
 router.get('/', getRecurringList);
 router.post('/', createRecurring);
+router.put('/:id', updateRecurring);
 router.patch('/:id', updateRecurring);
 router.delete('/:id', deleteRecurring);
 

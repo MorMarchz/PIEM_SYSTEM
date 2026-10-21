@@ -96,8 +96,22 @@ const TransactionsPage = () => {
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [deleting, setDeleting] = useState(false);
 
+  // Recurring Modal & Delete States
+  const [recurringDialogOpen, setRecurringDialogOpen] = useState(false);
+  const [editRecurringTarget, setEditRecurringTarget] = useState(null);
+  const [recFormType, setRecFormType] = useState('expense');
+  const [recFormTitle, setRecFormTitle] = useState('');
+  const [recFormAmount, setRecFormAmount] = useState('');
+  const [recFormCategoryId, setRecFormCategoryId] = useState('');
+  const [recFormDay, setRecFormDay] = useState(1);
+  const [recFormNote, setRecFormNote] = useState('');
+  const [recFormIsActive, setRecFormIsActive] = useState(true);
+  const [recSubmitting, setRecSubmitting] = useState(false);
+  const [recFormError, setRecFormError] = useState('');
+
   // Delete Recurring Rule State
   const [deleteRecurringTarget, setDeleteRecurringTarget] = useState(null);
+  const [deletingRecurring, setDeletingRecurring] = useState(false);
 
   // Fetch Master Categories for Filter & Form
   const fetchCategories = useCallback(async () => {
@@ -285,16 +299,93 @@ const TransactionsPage = () => {
     }
   };
 
+  // Open Add Recurring Dialog
+  const handleOpenAddRecurring = () => {
+    setEditRecurringTarget(null);
+    setRecFormType('expense');
+    setRecFormTitle('');
+    setRecFormAmount('');
+    setRecFormCategoryId('');
+    setRecFormDay(new Date().getDate());
+    setRecFormNote('');
+    setRecFormIsActive(true);
+    setRecFormError('');
+    setRecurringDialogOpen(true);
+  };
+
+  // Open Edit Recurring Dialog
+  const handleOpenEditRecurring = (rule) => {
+    setEditRecurringTarget(rule);
+    setRecFormType(rule.type || 'expense');
+    setRecFormTitle(rule.title || '');
+    setRecFormAmount(rule.amount ? formatAmountWithCommas(rule.amount) : '');
+    setRecFormCategoryId(rule.category?.id ? String(rule.category.id) : (rule.category_id ? String(rule.category_id) : ''));
+    setRecFormDay(rule.day_of_month || 1);
+    setRecFormNote(rule.note || '');
+    setRecFormIsActive(rule.is_active ?? true);
+    setRecFormError('');
+    setRecurringDialogOpen(true);
+  };
+
+  // Save Recurring Rule (Create or Update)
+  const handleSaveRecurring = async (e) => {
+    e.preventDefault();
+    if (!recFormTitle.trim()) {
+      setRecFormError('กรุณาระบุชื่อรายการประจำ');
+      return;
+    }
+
+    const num = parseAmountToNumber(recFormAmount);
+    if (isNaN(num) || num <= 0) {
+      setRecFormError('กรุณาระบุจำนวนเงินที่ถูกต้องและมากกว่า 0');
+      return;
+    }
+
+    setRecSubmitting(true);
+    setRecFormError('');
+    try {
+      const payload = {
+        title: recFormTitle.trim(),
+        amount: num,
+        type: recFormType,
+        category_id: recFormCategoryId ? parseInt(recFormCategoryId, 10) : null,
+        day_of_month: recFormDay,
+        note: recFormNote.trim() || null,
+        is_active: recFormIsActive,
+      };
+
+      if (editRecurringTarget) {
+        await api.put(`/recurring/${editRecurringTarget.id}`, payload);
+      } else {
+        await api.post('/recurring', payload);
+      }
+
+      setRecurringDialogOpen(false);
+      fetchRecurringRules();
+      fetchTransactions();
+      window.dispatchEvent(new CustomEvent('transactionUpdated'));
+    } catch (err) {
+      console.error('[TransactionsPage]: Save recurring error:', err);
+      setRecFormError(err.response?.data?.message || 'ไม่สามารถบันทึกรายการอัตโนมัติได้');
+    } finally {
+      setRecSubmitting(false);
+    }
+  };
+
   // Delete Recurring Rule Handler
   const handleDeleteRecurringConfirm = async () => {
     if (!deleteRecurringTarget) return;
     try {
+      setDeletingRecurring(true);
       await api.delete(`/recurring/${deleteRecurringTarget.id}`);
       setDeleteRecurringTarget(null);
       fetchRecurringRules();
+      fetchTransactions();
       window.dispatchEvent(new CustomEvent('transactionUpdated'));
     } catch (err) {
       console.error('[TransactionsPage]: Delete recurring error:', err);
+    } finally {
+      setDeletingRecurring(false);
     }
   };
 
@@ -769,7 +860,7 @@ const TransactionsPage = () => {
               variant="outlined"
               color="primary"
               size="small"
-              onClick={handleOpenAdd}
+              onClick={handleOpenAddRecurring}
               startIcon={<AddIcon sx={{ fontSize: 16 }} />}
             >
               เพิ่มรายการประจำ
@@ -789,7 +880,7 @@ const TransactionsPage = () => {
               <Typography variant="caption" sx={{ color: '#64748B', display: 'block', mt: 0.5, mb: 2 }}>
                 คุณสามารถเปิดตัวเลือก "ตั้งเป็นรายการประจำทุกเดือน" ตอนบันทึกรายการเพื่อให้อัปเดตออโต้
               </Typography>
-              <Button variant="contained" color="primary" size="small" onClick={handleOpenAdd}>
+              <Button variant="contained" color="primary" size="small" onClick={handleOpenAddRecurring}>
                 เริ่มตั้งค่ารายการประจำ
               </Button>
             </Box>
@@ -859,13 +950,26 @@ const TransactionsPage = () => {
                           {rule.is_active ? '● กำลังทำงาน' : '○ พักการทำงาน'}
                         </Typography>
 
-                        <IconButton
-                          size="small"
-                          onClick={() => setDeleteRecurringTarget(rule)}
-                          sx={{ color: '#64748B', p: 0.4, '&:hover': { color: '#F43F5E' } }}
-                        >
-                          <DeleteIcon sx={{ fontSize: 16 }} />
-                        </IconButton>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                          <Tooltip title="แก้ไขรายการประจำ">
+                            <IconButton
+                              size="small"
+                              onClick={() => handleOpenEditRecurring(rule)}
+                              sx={{ color: '#94A3B8', p: 0.5, '&:hover': { color: '#818CF8', bgcolor: 'rgba(99, 102, 241, 0.1)' } }}
+                            >
+                              <EditIcon sx={{ fontSize: 16 }} />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="ลบรายการประจำ">
+                            <IconButton
+                              size="small"
+                              onClick={() => setDeleteRecurringTarget(rule)}
+                              sx={{ color: '#94A3B8', p: 0.5, '&:hover': { color: '#F43F5E', bgcolor: 'rgba(244, 63, 94, 0.1)' } }}
+                            >
+                              <DeleteIcon sx={{ fontSize: 16 }} />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
                       </Box>
                     </Paper>
                   </Grid>
@@ -1127,6 +1231,247 @@ const TransactionsPage = () => {
             }}
           >
             {deleting ? <CircularProgress size={20} color="inherit" /> : 'ยืนยันลบ'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Add / Edit Recurring Rule Dialog */}
+      <Dialog
+        open={recurringDialogOpen}
+        onClose={() => setRecurringDialogOpen(false)}
+        maxWidth="xs"
+        fullWidth
+        PaperProps={{
+          sx: {
+            bgcolor: '#0F172A',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
+            borderRadius: { xs: '12px', sm: '16px' },
+            boxShadow: '0 24px 60px rgba(0, 0, 0, 0.8)',
+            m: { xs: 1.5, sm: 2 },
+          },
+        }}
+      >
+        <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pb: 1, pt: 2, px: { xs: 2, sm: 3 } }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#818CF8' }} />
+            <Typography variant="h6" sx={{ fontWeight: 700, color: '#F1F5F9', fontSize: { xs: '1rem', sm: '1.1rem' } }}>
+              {editRecurringTarget ? 'แก้ไขรายการอัตโนมัติประจำเดือน' : 'เพิ่มรายการอัตโนมัติประจำเดือน'}
+            </Typography>
+          </Box>
+          <IconButton size="small" onClick={() => setRecurringDialogOpen(false)} sx={{ color: '#64748B' }}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </DialogTitle>
+
+        <DialogContent sx={{ px: { xs: 2, sm: 3 }, py: 2 }}>
+          {recFormError && (
+            <Alert severity="error" sx={{ mb: 2, bgcolor: 'rgba(244, 63, 94, 0.15)', color: '#FFB2B7', border: '1px solid rgba(244, 63, 94, 0.3)' }}>
+              {recFormError}
+            </Alert>
+          )}
+
+          {/* Type Toggle */}
+          <Box sx={{ display: 'flex', p: 0.5, bgcolor: '#0A0E16', borderRadius: '10px', mb: 2.5, border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+            <Button
+              fullWidth
+              onClick={() => { setRecFormType('expense'); setRecFormCategoryId(''); }}
+              sx={{
+                py: 0.75,
+                borderRadius: '8px',
+                fontSize: { xs: '0.78rem', sm: '0.85rem' },
+                fontWeight: 600,
+                color: recFormType === 'expense' ? '#FFB2B7' : '#64748B',
+                bgcolor: recFormType === 'expense' ? 'rgba(244, 63, 94, 0.15)' : 'transparent',
+                border: recFormType === 'expense' ? '1px solid rgba(244, 63, 94, 0.3)' : '1px solid transparent',
+              }}
+            >
+              รายจ่าย (Expense)
+            </Button>
+            <Button
+              fullWidth
+              onClick={() => { setRecFormType('income'); setRecFormCategoryId(''); }}
+              sx={{
+                py: 0.75,
+                borderRadius: '8px',
+                fontSize: { xs: '0.78rem', sm: '0.85rem' },
+                fontWeight: 600,
+                color: recFormType === 'income' ? '#4EDEA3' : '#64748B',
+                bgcolor: recFormType === 'income' ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
+                border: recFormType === 'income' ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid transparent',
+              }}
+            >
+              รายรับ (Income)
+            </Button>
+          </Box>
+
+          <Box component="form" id="rec-modal-form" onSubmit={handleSaveRecurring} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <TextField
+              label="ชื่อรายการประจำ *"
+              placeholder="เช่น เงินเดือน, ค่าเช่าห้อง, ค่าเน็ต"
+              fullWidth
+              size="small"
+              value={recFormTitle}
+              onChange={(e) => setRecFormTitle(e.target.value)}
+              required
+            />
+
+            {/* Amount Field with Comma Formatting and Numeric Sanitization */}
+            <TextField
+              label="จำนวนเงิน (บาท) *"
+              placeholder="0.00"
+              fullWidth
+              size="small"
+              value={recFormAmount}
+              onChange={(e) => {
+                const formatted = formatAmountWithCommas(e.target.value);
+                setRecFormAmount(formatted);
+              }}
+              onKeyDown={(e) => {
+                if (['e', 'E', '+', '-'].includes(e.key)) {
+                  e.preventDefault();
+                }
+              }}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">฿</InputAdornment>,
+              }}
+              required
+            />
+
+            <TextField
+              select
+              label="หมวดหมู่"
+              fullWidth
+              size="small"
+              value={recFormCategoryId}
+              onChange={(e) => setRecFormCategoryId(e.target.value)}
+            >
+              <MenuItem value="">-- ไม่ระบุหมวดหมู่ --</MenuItem>
+              {categories
+                .filter((c) => !c.type || c.type === recFormType)
+                .map((c) => (
+                  <MenuItem key={c.id} value={String(c.id)}>
+                    <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
+                      <CategoryIcon icon={c.icon} name={c.name} size="1.1rem" />
+                      <span>{c.name}</span>
+                    </Box>
+                  </MenuItem>
+                ))}
+            </TextField>
+
+            <TextField
+              select
+              fullWidth
+              size="small"
+              label="ทำรายการทุกวันที่ของเดือน *"
+              value={recFormDay}
+              onChange={(e) => setRecFormDay(Number(e.target.value))}
+            >
+              {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
+                <MenuItem key={d} value={d}>
+                  วันที่ {d} ของทุกเดือน
+                </MenuItem>
+              ))}
+            </TextField>
+
+            {editRecurringTarget && (
+              <Box sx={{ p: 1.5, borderRadius: '10px', bgcolor: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={recFormIsActive}
+                      onChange={(e) => setRecFormIsActive(e.target.checked)}
+                      color="primary"
+                    />
+                  }
+                  label={
+                    <Box>
+                      <Typography variant="body2" sx={{ fontWeight: 600, color: '#F1F5F9', fontSize: '0.825rem' }}>
+                        สถานะการทำงาน (Active)
+                      </Typography>
+                      <Typography variant="caption" sx={{ color: '#94A3B8', fontSize: '0.7rem', display: 'block' }}>
+                        {recFormIsActive ? 'ระบบจะสร้างรายการอัตโนมัติตามรอบ' : 'พักการสร้างรายการอัตโนมัติชั่วคราว'}
+                      </Typography>
+                    </Box>
+                  }
+                />
+              </Box>
+            )}
+
+            <TextField
+              label="หมายเหตุเพิ่มเติม (ถ้ามี)"
+              placeholder="บันทึกรายละเอียดสั้นๆ"
+              multiline
+              rows={2}
+              fullWidth
+              size="small"
+              value={recFormNote}
+              onChange={(e) => setRecFormNote(e.target.value)}
+            />
+          </Box>
+        </DialogContent>
+
+        <DialogActions sx={{ px: { xs: 2, sm: 3 }, pb: 2, pt: 1, gap: 1 }}>
+          <Button onClick={() => setRecurringDialogOpen(false)} variant="outlined" sx={{ color: '#94A3B8' }}>
+            ยกเลิก
+          </Button>
+          <Button
+            type="submit"
+            form="rec-modal-form"
+            variant="contained"
+            disabled={recSubmitting}
+            sx={{
+              bgcolor: '#6366F1',
+              color: '#fff',
+              fontWeight: 600,
+              minWidth: { xs: 100, sm: 120 },
+            }}
+          >
+            {recSubmitting ? <CircularProgress size={20} color="inherit" /> : 'บันทึกข้อมูล'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Delete Recurring Confirmation Dialog */}
+      <Dialog
+        open={Boolean(deleteRecurringTarget)}
+        onClose={() => setDeleteRecurringTarget(null)}
+        PaperProps={{
+          sx: {
+            bgcolor: '#0F172A',
+            borderRadius: { xs: '12px', sm: '16px' },
+            border: '1px solid rgba(244, 63, 94, 0.3)',
+            m: { xs: 1.5, sm: 2 },
+          },
+        }}
+      >
+        <DialogTitle sx={{ color: '#FFB2B7', fontWeight: 700, fontSize: { xs: '1rem', sm: '1.1rem' } }}>
+          ยืนยันการลบรายการอัตโนมัติประจำเดือน
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText sx={{ color: '#94A3B8', fontSize: '0.85rem' }}>
+            คุณต้องการลบรายการอัตโนมัติประจำเดือน <strong style={{ color: '#F1F5F9' }}>"{deleteRecurringTarget?.title}"</strong> จำนวนเงิน{' '}
+            <strong style={{ color: deleteRecurringTarget?.type === 'income' ? '#10B981' : '#F43F5E' }}>
+              ฿{deleteRecurringTarget?.amount ? parseFloat(deleteRecurringTarget.amount).toLocaleString('th-TH', { minimumFractionDigits: 2 }) : '0.00'}
+            </strong>{' '}
+            (ทุกวันที่ {deleteRecurringTarget?.day_of_month} ของทุกเดือน) ใช่หรือไม่?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={() => setDeleteRecurringTarget(null)} sx={{ color: '#94A3B8' }}>
+            ยกเลิก
+          </Button>
+          <Button
+            onClick={handleDeleteRecurringConfirm}
+            variant="contained"
+            disabled={deletingRecurring}
+            sx={{
+              bgcolor: '#F43F5E',
+              color: '#fff',
+              fontWeight: 600,
+              '&:hover': { bgcolor: '#E11D48' },
+            }}
+          >
+            {deletingRecurring ? <CircularProgress size={20} color="inherit" /> : 'ยืนยันลบ'}
           </Button>
         </DialogActions>
       </Dialog>
