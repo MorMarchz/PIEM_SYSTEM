@@ -65,6 +65,7 @@ const TransactionsPage = () => {
   const [transactions, setTransactions] = useState([]);
   const [categories, setCategories] = useState([]);
   const [pagination, setPagination] = useState({ current_page: 1, total_pages: 1, total_items: 0, limit: 10 });
+  const [summary, setSummary] = useState({ total_income: 0, total_expense: 0, net_balance: 0 });
   const [loading, setLoading] = useState(true);
 
   // Recurring state
@@ -148,6 +149,9 @@ const TransactionsPage = () => {
       if (response.data?.success) {
         setTransactions(response.data.data.transactions || []);
         setPagination(response.data.data.pagination || { current_page: 1, total_pages: 1, total_items: 0 });
+        if (response.data.data.summary) {
+          setSummary(response.data.data.summary);
+        }
       }
     } catch (err) {
       console.error('[TransactionsPage]: Failed to fetch transactions:', err);
@@ -414,14 +418,22 @@ const TransactionsPage = () => {
     document.body.removeChild(link);
   };
 
-  // KPI Calculations from current list
-  const currentInflow = transactions
-    .filter((t) => t.type === 'income')
-    .reduce((acc, curr) => acc + (parseFloat(curr.amount) || 0), 0);
-  const currentOutflow = transactions
-    .filter((t) => t.type === 'expense')
-    .reduce((acc, curr) => acc + (parseFloat(curr.amount) || 0), 0);
-  const currentNet = currentInflow - currentOutflow;
+  // KPI Calculations across all matching records (from backend summary) with fallback to current list
+  const currentInflow = summary?.total_income !== undefined
+    ? summary.total_income
+    : transactions
+        .filter((t) => t.type === 'income')
+        .reduce((acc, curr) => acc + (parseFloat(curr.amount) || 0), 0);
+
+  const currentOutflow = summary?.total_expense !== undefined
+    ? summary.total_expense
+    : transactions
+        .filter((t) => t.type === 'expense')
+        .reduce((acc, curr) => acc + (parseFloat(curr.amount) || 0), 0);
+
+  const currentNet = summary?.net_balance !== undefined
+    ? summary.net_balance
+    : (currentInflow - currentOutflow);
 
   return (
     <Box sx={{ pb: { xs: 4, md: 6 } }}>
@@ -523,7 +535,7 @@ const TransactionsPage = () => {
                 </Box>
                 <Box>
                   <Typography variant="caption" sx={{ color: '#64748B', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                    รายรับที่แสดง (Inflow)
+                    รายรับรวม (Total Inflow)
                   </Typography>
                   <Typography variant="subtitle1" className="tabular-nums" sx={{ fontWeight: 700, color: '#10B981', fontSize: '1.05rem', lineHeight: 1.2 }}>
                     +฿{currentInflow.toLocaleString('th-TH', { minimumFractionDigits: 2 })}
@@ -539,7 +551,7 @@ const TransactionsPage = () => {
                 </Box>
                 <Box>
                   <Typography variant="caption" sx={{ color: '#64748B', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                    รายจ่ายที่แสดง (Outflow)
+                    รายจ่ายรวม (Total Outflow)
                   </Typography>
                   <Typography variant="subtitle1" className="tabular-nums" sx={{ fontWeight: 700, color: '#F43F5E', fontSize: '1.05rem', lineHeight: 1.2 }}>
                     -฿{currentOutflow.toLocaleString('th-TH', { minimumFractionDigits: 2 })}
@@ -555,7 +567,7 @@ const TransactionsPage = () => {
                 </Box>
                 <Box>
                   <Typography variant="caption" sx={{ color: '#64748B', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                    ยอดสุทธิ (Net Delta)
+                    ยอดสุทธิรวม (Total Net Delta)
                   </Typography>
                   <Typography variant="subtitle1" className="tabular-nums" sx={{ fontWeight: 700, color: currentNet >= 0 ? '#10B981' : '#F43F5E', fontSize: '1.05rem', lineHeight: 1.2 }}>
                     {currentNet >= 0 ? '+' : ''}฿{currentNet.toLocaleString('th-TH', { minimumFractionDigits: 2 })}

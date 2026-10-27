@@ -232,10 +232,20 @@ export const getTransactions = async (req, res, next) => {
 
     const whereSql = whereClauses.join(' AND ');
 
-    // 1. Get total count for pagination metadata
-    const countSql = `SELECT COUNT(*) AS total FROM transactions t WHERE ${whereSql}`;
-    const [countRows] = await pool.query(countSql, params);
-    const totalItems = countRows[0].total;
+    // 1. Get total count and aggregate summary across all matching records
+    const summarySql = `
+      SELECT
+        COUNT(*) AS total,
+        COALESCE(SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE 0 END), 0) AS total_income,
+        COALESCE(SUM(CASE WHEN t.type = 'expense' THEN t.amount ELSE 0 END), 0) AS total_expense
+      FROM transactions t
+      WHERE ${whereSql}
+    `;
+    const [summaryRows] = await pool.query(summarySql, params);
+    const totalItems = summaryRows[0].total;
+    const totalIncome = parseFloat(summaryRows[0].total_income) || 0;
+    const totalExpense = parseFloat(summaryRows[0].total_expense) || 0;
+    const netBalance = totalIncome - totalExpense;
     const totalPages = Math.ceil(totalItems / limitNum) || 1;
 
     // 2. Fetch paginated records
@@ -276,6 +286,11 @@ export const getTransactions = async (req, res, next) => {
       message: 'Transactions retrieved successfully',
       data: {
         transactions: formattedTransactions,
+        summary: {
+          total_income: totalIncome,
+          total_expense: totalExpense,
+          net_balance: netBalance,
+        },
         pagination: {
           total_items: totalItems,
           total_pages: totalPages,
