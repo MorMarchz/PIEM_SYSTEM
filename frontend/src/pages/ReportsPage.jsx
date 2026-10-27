@@ -27,9 +27,10 @@ import {
 } from 'recharts';
 import api from '../services/api';
 import CategoryIcon from '../components/common/CategoryIcon';
+import { getCurrentLocalMonthString } from '../utils/dateFormat';
 
 const ReportsPage = () => {
-  const currentMonthStr = new Date().toISOString().slice(0, 7); // 'YYYY-MM'
+  const currentMonthStr = getCurrentLocalMonthString(); // 'YYYY-MM'
   const [selectedMonth, setSelectedMonth] = useState(currentMonthStr);
   const [reportData, setReportData] = useState(null);
   const [trends, setTrends] = useState([]);

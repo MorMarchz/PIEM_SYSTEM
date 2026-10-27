@@ -1,7 +1,25 @@
 import axios from 'axios';
 
-// ดึงค่า URL จาก Environment Variable (Vercel) ถ้าไม่มีให้ใช้ Localhost
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api/v1';
+// ดึงค่า URL จาก Environment Variable (Vercel) พร้อม Normalize ให้ถูกต้องเสมอ
+const getBaseUrl = () => {
+  let url = (import.meta.env.VITE_API_URL || '').trim();
+  if (!url) {
+    return 'http://localhost:5001/api/v1';
+  }
+  // ตัด trailing slashes ออก
+  url = url.replace(/\/+$/, '');
+  // หากผู้ใช้ใส่มาเฉพาะโดเมนโดยไม่มี /api/v1 ให้เติมให้อัตโนมัติ
+  if (!url.endsWith('/api/v1')) {
+    if (url.endsWith('/api')) {
+      url += '/v1';
+    } else {
+      url += '/api/v1';
+    }
+  }
+  return url;
+};
+
+const API_BASE_URL = getBaseUrl();
 
 // Create configured Axios Instance
 const api = axios.create({

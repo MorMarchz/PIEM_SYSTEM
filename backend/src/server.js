@@ -18,20 +18,42 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5001;
 
-// Core Middlewares
+// Trust reverse proxy (Railway, Render, Cloudflare) for HTTPS cookies and accurate IPs
+app.set('trust proxy', 1);
+
+// Parse configured frontend origins from environment (comma-separated or single)
+const configuredOrigins = (process.env.FRONTEND_URL || '')
+  .split(',')
+  .map((o) => o.trim().replace(/\/+$/, ''))
+  .filter(Boolean);
+
 const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:5173',
+  ...configuredOrigins,
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'http://localhost:3000',
   'https://piem-system.vercel.app',
 ];
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (e.g. mobile apps, curl, Postman)
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
+    // Allow requests with no origin (e.g. mobile apps, curl, Postman, internal server)
+    if (!origin) {
+      return callback(null, true);
     }
+
+    const cleanOrigin = origin.replace(/\/+$/, '');
+
+    // Allow explicitly configured origins or any *.vercel.app deployment
+    if (
+      allowedOrigins.includes(cleanOrigin) ||
+      /\.vercel\.app$/.test(cleanOrigin)
+    ) {
+      return callback(null, true);
+    }
+
+    // Disallow without throwing an uncaught 500 error
+    callback(null, false);
   },
   credentials: true,
 }));

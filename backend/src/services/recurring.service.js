@@ -55,7 +55,14 @@ export const processUserRecurringTransactions = async (userId, reqContext = null
       // And has not already been generated for this month?
       let alreadyGeneratedThisMonth = false;
       if (rule.last_generated_date) {
-        const lastGenStr = new Date(rule.last_generated_date).toISOString().slice(0, 7); // 'YYYY-MM'
+        let lastGenStr = '';
+        if (rule.last_generated_date instanceof Date) {
+          const y = rule.last_generated_date.getFullYear();
+          const m = String(rule.last_generated_date.getMonth() + 1).padStart(2, '0');
+          lastGenStr = `${y}-${m}`;
+        } else {
+          lastGenStr = String(rule.last_generated_date).slice(0, 7);
+        }
         if (lastGenStr === currentMonthKey) {
           alreadyGeneratedThisMonth = true;
         }

@@ -54,6 +54,7 @@ import {
   parseAmountToNumber,
   formatCurrency,
 } from '../utils/numberFormat';
+import { getTodayLocalDateString, formatToLocalDateString } from '../utils/dateFormat';
 
 const TransactionsPage = () => {
   const navigate = useNavigate();
@@ -85,7 +86,7 @@ const TransactionsPage = () => {
   const [formTitle, setFormTitle] = useState('');
   const [formAmount, setFormAmount] = useState('');
   const [formCategoryId, setFormCategoryId] = useState('');
-  const [formDate, setFormDate] = useState(new Date().toISOString().split('T')[0]);
+  const [formDate, setFormDate] = useState(getTodayLocalDateString());
   const [formNote, setFormNote] = useState('');
   const [isRecurring, setIsRecurring] = useState(false);
   const [recurringDay, setRecurringDay] = useState(new Date().getDate());
@@ -194,7 +195,7 @@ const TransactionsPage = () => {
     setFormTitle('');
     setFormAmount('');
     setFormCategoryId('');
-    setFormDate(new Date().toISOString().split('T')[0]);
+    setFormDate(getTodayLocalDateString());
     setFormNote('');
     setIsRecurring(false);
     setRecurringDay(new Date().getDate());
@@ -209,7 +210,7 @@ const TransactionsPage = () => {
     setFormTitle(tx.title || '');
     setFormAmount(tx.amount ? formatAmountWithCommas(tx.amount) : '');
     setFormCategoryId(tx.category?.id ? String(tx.category.id) : '');
-    setFormDate(tx.date ? new Date(tx.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]);
+    setFormDate(tx.date ? formatToLocalDateString(tx.date) : getTodayLocalDateString());
     setFormNote(tx.note || '');
     setIsRecurring(false);
     setFormError('');
@@ -407,7 +408,7 @@ const TransactionsPage = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.setAttribute('href', url);
-    link.setAttribute('download', `transactions_export_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute('download', `transactions_export_${getTodayLocalDateString()}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

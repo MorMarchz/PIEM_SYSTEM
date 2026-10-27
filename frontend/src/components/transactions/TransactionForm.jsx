@@ -23,6 +23,7 @@ import {
   formatAmountWithCommas,
   parseAmountToNumber,
 } from '../../utils/numberFormat';
+import { getTodayLocalDateString, formatToLocalDateString } from '../../utils/dateFormat';
 
 const TransactionForm = ({ mode = 'create', initialData = null, transactionId = null }) => {
   const navigate = useNavigate();
@@ -33,8 +34,8 @@ const TransactionForm = ({ mode = 'create', initialData = null, transactionId = 
   const [categoryId, setCategoryId] = useState(initialData?.category?.id || '');
   const [date, setDate] = useState(
     initialData?.date
-      ? new Date(initialData.date).toISOString().split('T')[0]
-      : new Date().toISOString().split('T')[0]
+      ? formatToLocalDateString(initialData.date)
+      : getTodayLocalDateString()
   );
   const [note, setNote] = useState(initialData?.note || '');
 

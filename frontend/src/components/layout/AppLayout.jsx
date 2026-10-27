@@ -43,6 +43,8 @@ import CloseIcon from '@mui/icons-material/CloseRounded';
 import { useAuth } from '../../context/AuthContext';
 import { APP_VERSION } from '../../config/version';
 import api from '../../services/api';
+import { getTodayLocalDateString } from '../../utils/dateFormat';
+import { formatAmountWithCommas, parseAmountToNumber } from '../../utils/numberFormat';
 
 const DRAWER_WIDTH = 240;
 
@@ -67,7 +69,7 @@ const AppLayout = () => {
   const [quickTitle, setQuickTitle] = useState('');
   const [quickAmount, setQuickAmount] = useState('');
   const [quickCategoryId, setQuickCategoryId] = useState('');
-  const [quickDate, setQuickDate] = useState(new Date().toISOString().split('T')[0]);
+  const [quickDate, setQuickDate] = useState(getTodayLocalDateString());
   const [quickNote, setQuickNote] = useState('');
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(false);
@@ -102,7 +104,7 @@ const AppLayout = () => {
     setQuickTitle('');
     setQuickAmount('');
     setQuickNote('');
-    setQuickDate(new Date().toISOString().split('T')[0]);
+    setQuickDate(getTodayLocalDateString());
     loadCategories(quickType);
   };
 
@@ -132,9 +134,9 @@ const AppLayout = () => {
       setQuickError('กรุณากรอกชื่อรายการ');
       return;
     }
-    const num = parseFloat(quickAmount);
+    const num = parseAmountToNumber(quickAmount);
     if (isNaN(num) || num <= 0) {
-      setQuickError('กรุณาระบุจำนวนเงินที่ถูกต้อง');
+      setQuickError('กรุณาระบุจำนวนเงินที่ถูกต้องและมากกว่า 0');
       return;
     }
 
@@ -583,13 +585,19 @@ const AppLayout = () => {
 
             <TextField
               label="จำนวนเงิน (บาท) *"
-              type="number"
               placeholder="0.00"
               fullWidth
               size="small"
               value={quickAmount}
-              onChange={(e) => setQuickAmount(e.target.value)}
-              inputProps={{ min: '0', step: '0.01' }}
+              onChange={(e) => {
+                const formatted = formatAmountWithCommas(e.target.value);
+                setQuickAmount(formatted);
+              }}
+              onKeyDown={(e) => {
+                if (['e', 'E', '+', '-'].includes(e.key)) {
+                  e.preventDefault();
+                }
+              }}
               required
             />
 
